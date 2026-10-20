@@ -9,3 +9,5 @@ brute/subset_dp_m2
 method_dp/tmp/
 method_ie/tmp/
 __pycache__/
+review/tmp/
+recurrence/__pycache__/
