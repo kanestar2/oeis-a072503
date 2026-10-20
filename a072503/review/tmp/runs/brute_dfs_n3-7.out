@@ -1,0 +1,10 @@
+n=3 directed=6 a(n)=3 odd=0 time=0.01s
+  wall=.011850414s
+n=4 directed=90 a(n)=45 odd=0 time=0.00s
+  wall=.009273686s
+n=5 directed=3648 a(n)=1824 odd=0 time=0.01s
+  wall=.013527726s
+n=6 directed=219120 a(n)=109560 odd=0 time=0.01s
+  wall=.019627705s
+n=7 directed=19041120 a(n)=9520560 odd=0 time=0.71s
+  wall=.716743604s

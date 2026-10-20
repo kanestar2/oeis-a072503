@@ -1,0 +1,16 @@
+A072503 rule A(in line, any gap)    n=3: directed=6 half=3.0 known=3  lacings=['124536', '135426', '142356', '145326', '153246', '154236']
+A072503 rule A(in line, any gap)    n=4: directed=152 half=76.0 known=45
+A072503 rule A(in line, any gap)    n=5: directed=7476 half=3738.0 known=1824
+A072503 rule B(in line, adjacent)   n=3: directed=6 half=3.0 known=3  lacings=['124536', '135426', '142356', '145326', '153246', '154236']
+A072503 rule B(in line, adjacent)   n=4: directed=178 half=89.0 known=45
+A072503 rule B(in line, adjacent)   n=5: directed=11108 half=5554.0 known=1824
+A072503 rule C(same side)           n=3: directed=6 half=3.0 known=3  lacings=['124536', '135426', '142356', '145326', '153246', '154236']
+A072503 rule C(same side)           n=4: directed=90 half=45.0 known=45
+A072503 rule C(same side)           n=5: directed=3648 half=1824.0 known=1824
+A078602 check rule A(in line, any gap): n=3 -> 21 (A078602: 21, 601, 34278)
+A078602 check rule A(in line, any gap): n=4 -> 533 (A078602: 21, 601, 34278)
+A078602 check rule A(in line, any gap): n=5 -> 25389 (A078602: 21, 601, 34278)
+A078602 check rule B(in line, adjacent): n=3 -> 21 (A078602: 21, 601, 34278)
+A078602 check rule B(in line, adjacent): n=4 -> 601 (A078602: 21, 601, 34278)
+A078602 check rule B(in line, adjacent): n=5 -> 34278 (A078602: 21, 601, 34278)
+wall=.550564348s
