@@ -82,7 +82,10 @@
   literal enumeration of all lacings gives a(3..8). The reading of the rules is
   the one of Sean A. Irvine's Java program ("three consecutive eyelets of the
   lacing on the same side are not permitted"); the alternative "three eyelets
-  in a line" reading of A078602 gives 76 or 89 instead of a(4) = 45.
+  in a line" reading of A078602 gives 76 or 89 instead of a(4) = 45. Without
+  the ban on horizontals the same rules give exactly A078698 (20, 396, 14976,
+  907200, ...). The values of 2*a(n)/(n-1)! (canonical lacings) were also
+  checked by direct enumeration for n <= 11.
 
 Проверка перед отправкой:
   * программа выше — копия oeis/a072503_oeis.py; `python3 oeis/a072503_oeis.py`
