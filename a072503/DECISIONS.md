@@ -43,3 +43,22 @@ enumeration of all permutations (`brute/interpretations.py`, log
 `brute/brute_dfs.c` enumerates the lacings one by one (DFS, OpenMP):
 n = 3..8 give 3, 45, 1824, 109560, 9520560, 1145057760 — all equal to OEIS
 (logs in `logs/brute_dfs_*.log`, n = 8 took 54 s on 4 threads).
+
+## D4. Third, "direct" check: dynamic programming over subsets  (stage 3)
+Independent of the two fast methods (which are written by separate agents that
+see only `DEFINITION.md`), `brute/subset_dp.c` counts lacings by a Held-Karp
+table indexed by (set of used eyelets, last eyelet, "previous eyelet on the same
+side?").  It is the definition translated literally, with no symmetry argument,
+so it serves as an exact semi-brute-force reference beyond the reach of
+enumeration.  Exponential: table 2^(2n-2)*(2n-2)*2 entries.
+* n = 3..12 exact with unsigned __int128 (`logs/subset_dp_exact_n3-12.log`):
+  reproduces all seven known terms a(3..9), and gives
+  a(10) = 36441019601280, a(11) = 9101014585689600, a(12) = 2761334311015526400.
+* n = 13 needs 6.4 GB with 64-bit cells, so it is run twice (mod 2^64 and mod
+  2^61-1) and combined by CRT (`brute/crt.py`, exact while D < 2^125; checked on
+  n = 12 against the exact run): a(13) = 1000447433001080064000
+  (`logs/subset_dp_crt_n12-13.log`).
+* Decision: these values are NOT given to the method agents (independence);
+  they are compared with the agents' results afterwards.
+* n = 14 would need ~28 GB in this layout (or a layered table with ranking);
+  not done.

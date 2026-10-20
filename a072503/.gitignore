@@ -3,3 +3,6 @@
 brute/brute_dfs
 brute/subset_dp
 brute/brute_dfs_ckpt
+brute/subset_dp_m0
+brute/subset_dp_m1
+brute/subset_dp_m2
