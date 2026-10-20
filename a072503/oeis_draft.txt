@@ -1,0 +1,95 @@
+ЧЕРНОВИК ПРАВКИ ДЛЯ OEIS A072503 — НИЧЕГО НЕ ОТПРАВЛЕНО
+=========================================================
+
+Как пользоваться: на oeis.org войти в аккаунт, открыть A072503, нажать "edit"
+и внести изменения ниже вручную. Строки с пометкой [NEW] или [CHANGED] —
+новые или изменённые, остальные остаются как есть. Вместо _Your Name_ поставьте
+своё имя в формате OEIS (_Имя Фамилия_). b-файл лежит в oeis/b072503.txt;
+он загружается отдельно через ссылку "b-file" на странице редактирования.
+
+Перед отправкой стоит проверить действующие правила OEIS о работах, сделанных
+с помощью ИИ, и при необходимости указать это в комментарии для редакторов.
+Редакторы могут задать вопросы — ответы на них есть в explanation_ru.md.
+
+---------------------------------------------------------------------------
+%I A072503
+%S A072503 3,45,1824,109560,9520560,1145057760,181091917440,36441019601280,9101014585689600,2761334311015526400,1000447433001080064000,426648783674324552140800,211548372228734725081497600,120678246106857751226923008000,78477648409428536071705853952000
+                                                                    [CHANGED: a(10)..a(17) added; 240 characters, within the 260-character limit.
+                                                                     In the web edit form this whole list is the single DATA field.]
+%N A072503 Number of ways to lace a shoe with n eyelet pairs such that there is no direct "horizontal" connection between any adjacent eyelet pair.
+%C A072503 The lacing must not have any "straight connections" between adjacent eyelet pairs (e.g. 2<->2*n-1, 3<->2*n-2, 4<->2*n-3,....). There are no symmetric solutions.
+%C A072503 From _Sean A. Irvine_, Oct 06 2024: (Start)
+%C A072503 The lacing must begin and end with the top eyelet pair (1 and 2n in Pfoertner's numbering).
+%C A072503 Every eyelet must be used.
+%C A072503 Under versus over crossings are not considered distinct.
+%C A072503 Three consecutive eyelets on the same side are not permitted.
+%C A072503 Because there are no symmetric solutions, mirrored solutions can be handled by simply dividing the total solutions by 2. (End)
+%C A072503 Renaming the inner eyelet pairs 2..n (the same permutation on both sides) maps lacings to lacings, and no renaming other than the identity fixes a lacing. Hence 2*a(n)/(n-1)! is an integer: it is the number of lacings from eyelet 1 to eyelet 2n in which the inner pairs are first reached in the order 2, 3, ..., n. Its values for n = 3..11 are 3, 15, 152, 1826, 26446, 454388, 8982734, 200843362, 5015991284. - _Your Name_, Oct 20 2026
+                                                                    [NEW]
+%H A072503 _Your Name_, <a href="/A072503/b072503.txt">Table of n, a(n) for n = 3..234</a>
+                                                                    [NEW]
+%H A072503 Sean A. Irvine, <a href="https://github.com/archmageirvine/joeis/blob/master/src/irvine/oeis/a072/A072503.java">Java program</a> (github)
+%H A072503 Hugo Pfoertner, <a href="http://www.randomwalk.de/shoelace/nonstra.txt">FORTRAN program to count non-straight shoe lacings and results for N=3,4</a>
+%H A072503 <a href="/index/La#lacings">Index entries for sequences related to shoe lacings</a>
+%F A072503 a(n) = ((n-1)!/2) * Sum_{k=0..n-1} (-1)^k * (n-1-k)! * N(n,k), where N(n,k) is the number of pairs (w,S) such that w is a word of n letters L and n letters R that starts with L, ends with R and contains neither LLL nor RRR, and S is a set of k positions i with 2 <= i <= 2n-2 and w(i) != w(i+1), no two of them consecutive. (w is the sequence of sides visited by the lace; S is a set of side changes where a horizontal pair is forced, counted by inclusion-exclusion.) - _Your Name_, Oct 20 2026
+                                                                    [NEW]
+%e A072503 The 6 non-straight lacings for n=3 are: 124536, 135426, 142356, 145326, 153246, 154236. Not counting mirror images we get a(3)=3.
+%o A072503 (Fortran) See Links.
+%o A072503 (Python)
+%o A072503 def a(n):
+%o A072503     # Build the lacing eyelet by eyelet.  Rows 2..n are interchangeable, so
+%o A072503     # only counts matter. State (u, l, r, s, k, f): u, l, r = number of inner
+%o A072503     # rows with no eyelet / only the left one / only the right one used so far,
+%o A072503     # s = side of the current eyelet (0 = left, 1 = right), k = 1 or 2 eyelets
+%o A072503     # in a row on that side, f = 1 if the other eyelet of the current row is unused.
+%o A072503     cur = {(n-1, 0, 0, 0, 1, 0): 1}           # start at eyelet 1 (left, top)
+%o A072503     for _ in range(2*n-2):
+%o A072503         nxt = {}
+%o A072503         for (u, l, r, s, k, f), v in cur.items():
+%o A072503             for t in (0, 1):                  # side of the next eyelet
+%o A072503                 if t == s and k == 2: continue    # no three on one side
+%o A072503                 kk = k+1 if t == s else 1
+%o A072503                 if u:                         # eyelet of an untouched row
+%o A072503                     key = (u-1, l+1, r, t, kk, 1) if t == 0 else (u-1, l, r+1, t, kk, 1)
+%o A072503                     nxt[key] = nxt.get(key, 0) + u*v
+%o A072503                 m = (r if t == 0 else l) - (f if t != s else 0)  # no horizontal
+%o A072503                 if m > 0:                     # second eyelet of a half-used row
+%o A072503                     key = (u, l, r-1, t, kk, 0) if t == 0 else (u, l-1, r, t, kk, 0)
+%o A072503                     nxt[key] = nxt.get(key, 0) + m*v
+%o A072503         cur = nxt
+%o A072503     # finish at eyelet 2n (right, top); halve for mirror images
+%o A072503     return sum(v for (u, l, r, s, k, f), v in cur.items() if not (s == 1 and k == 2))//2
+%o A072503 print([a(n) for n in range(3, 18)]) # _Your Name_, Oct 20 2026
+                                                                    [NEW: Python program]
+%Y A072503 Cf. A078602, A078698, A078702, A002866.
+%K A072503 nonn                                                     [CHANGED: keyword "more" removed]
+%O A072503 3,1
+%A A072503 _Hugo Pfoertner_, Jan 27 2003
+%E A072503 a(9) from _Sean A. Irvine_, Oct 07 2024
+%E A072503 a(10)-a(17) from _Your Name_, Oct 20 2026
+                                                                    [NEW]
+---------------------------------------------------------------------------
+
+Возможное сообщение редакторам (поле "Notes" / комментарий к правке), по-английски:
+
+  New terms a(10)-a(234) computed by two independent exact polynomial-time
+  methods that agree for n = 3..400: (1) a dynamic programming over the counts
+  of eyelet pairs with no / only left / only right eyelet used (the inner pairs
+  are interchangeable), (2) inclusion-exclusion over the forced horizontal
+  connections, summed over the admissible side patterns (formula above).
+  Both reproduce a(3..9). In addition a direct dynamic programming over subsets
+  of eyelets (no symmetry used) gives the same values for n = 3..13, and a
+  literal enumeration of all lacings gives a(3..8). The reading of the rules is
+  the one of Sean A. Irvine's Java program ("three consecutive eyelets of the
+  lacing on the same side are not permitted"); the alternative "three eyelets
+  in a line" reading of A078602 gives 76 or 89 instead of a(4) = 45. Without
+  the ban on horizontals the same rules give exactly A078698 (20, 396, 14976,
+  907200, ...). The values of 2*a(n)/(n-1)! (canonical lacings) were also
+  checked by direct enumeration for n <= 11.
+
+Проверка перед отправкой:
+  * программа выше — копия oeis/a072503_oeis.py; `python3 oeis/a072503_oeis.py`
+    печатает a(3..17) за доли секунды и совпадает с accepted_terms.txt;
+  * b-файл oeis/b072503.txt: n = 3..234, в каждой строке "n a(n)", самое длинное
+    число — 1000 цифр (предел OEIS для b-файлов); дальше числа длиннее.
+    Полный список до n = 400 — в accepted_terms.txt.

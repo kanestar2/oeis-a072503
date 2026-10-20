@@ -1,0 +1,6 @@
+method_dp: n = 3..400 (398 values), reproduces a(3..9): True
+method_ie: n = 3..500 (498 values), reproduces a(3..9): True
+subset_dp: n = 3..13 (11 values), reproduces a(3..9): True
+method_dp vs method_ie: common n = 3..400, mismatches: []
+subset_dp vs both methods, n = 3..13: mismatches: []
+accepted_terms.txt written: n = 3..400
