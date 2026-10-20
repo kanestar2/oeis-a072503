@@ -1,0 +1,4 @@
+n=3: D=6, D/(n-1)!=3 (exact: True), canonical lacings=3
+n=4: D=90, D/(n-1)!=15 (exact: True), canonical lacings=15
+n=5: D=3648, D/(n-1)!=152 (exact: True), canonical lacings=152
+n=6: D=219120, D/(n-1)!=1826 (exact: True), canonical lacings=1826
