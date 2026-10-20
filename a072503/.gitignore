@@ -1,0 +1,5 @@
+# compiled binaries
+*.o
+brute/brute_dfs
+brute/subset_dp
+brute/brute_dfs_ckpt
