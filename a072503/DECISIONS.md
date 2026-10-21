@@ -101,7 +101,7 @@ was done about them:
    file was rebuilt byte-identically twice); left as is, documented here.
 6. *Mention the A078698/A078700 evidence and that the canonical counts
    2a(n)/(n-1)! are now checked to n = 11.*  -> added to D2, README,
-   explanation_ru.md and the editor note in oeis_draft.txt.
+   explanation.md and the editor note in oeis_draft.txt.
 7. Pfoertner's FORTRAN program could not be fetched (host does not resolve,
    web archive blocked).  Residual risk is small: its values a(3..8) and
    Irvine's a(9) are reproduced.

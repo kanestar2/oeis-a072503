@@ -152,7 +152,7 @@ Binaries were compiled into `review/tmp/bin` (`gcc -O2 [-fopenmp] [-DMODE=k]`, t
 
 **Weaknesses in the checks / documentation:**
 
-1. **W1 (medium; a check weaker than claimed).** README ("повторный запуск пересчитывает и сверяет каждую строку") and the method docs say that re-running `dp_main.py`/`ie_dp.py` re-verifies results.txt. That is true only when no checkpoint exists.
+1. **W1 (medium; a check weaker than claimed).** README ("a rerun recomputes and checks each line") and the method docs say that re-running `dp_main.py`/`ie_dp.py` re-verifies results.txt. That is true only when no checkpoint exists.
    * Both programs save a checkpoint at the end of every run (`tmp/checkpoint.pkl`, `tmp/ie_dp.ckpt`).
    * A second identical run then resumes past every n, verifies nothing, and logs "finished" (demonstrated: `dp_main.py 150` → "resumed from checkpoint at layer k=298 … total 0.2s"; `ie_dp.py 200` → "first layer=201 … total 0.0s").
    * The official re-verifications were valid because the checkpoints had been deleted by hand.
@@ -171,7 +171,7 @@ Binaries were compiled into `review/tmp/bin` (`gcc -O2 [-fopenmp] [-DMODE=k]`, t
    * Suggest adding these to DECISIONS/README and to the editor note.
 7. **W7 (info).** Pfoertner's FORTRAN program could not be retrieved, so it was not compared.
 8. **W8 (info).** Method_ie's terms n = 401..500 (not accepted) agree with my independent `glue_ie.py`. If wanted, they now have two independent confirmations. This is irrelevant for the b-file, which stops at n = 234 because of the 1000-digit limit.
-9. **W9 (info).** Small timing differences from the docs (brute n=8: 74 s here vs 54 s) and an ordering difference in explanation_ru.md ("2, 2, 2, 0 и 0" vs METHOD.md "0, 2, 2, 0, 2", the same multiset). These are harmless.
+9. **W9 (info).** Small timing differences from the docs (brute n=8: 74 s here vs 54 s) and an ordering difference in explanation.md ("2, 2, 2, 0 and 0" vs METHOD.md "0, 2, 2, 0, 2", the same multiset). These are harmless.
 10. Not reviewed in depth: `recurrence/` (marked as a conjecture and not part of the draft). Its hold-out uses n = 401..500, which `glue_ie.py` has now confirmed.
 
 ## 6. Verdict
