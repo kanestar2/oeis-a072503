@@ -4,9 +4,9 @@ title: "OEIS A072503: new terms a(10)-a(400) (shoe lacings with no horizontal co
 type: software
 authors:
   - given-names: Kane
+    family-names: Severin
     alias: kanestar2
 repository-code: "https://github.com/kanestar2/oeis-a072503"
-url: "https://github.com/kanestar2/oeis-a072503"
 abstract: >-
   New terms a(10)..a(400) of OEIS A072503, the number of ways to lace a shoe
   with n eyelet pairs such that there is no direct horizontal connection
@@ -23,12 +23,4 @@ keywords:
   - dynamic programming
   - inclusion-exclusion
   - Claude Code
-license:
-  - MIT
-  - CC-BY-4.0
-references:
-  - type: database
-    title: "A072503: Number of ways to lace a shoe with n eyelet pairs such that there is no direct horizontal connection between any adjacent eyelet pair"
-    authors:
-      - name: "The OEIS Foundation Inc."
-    url: "https://oeis.org/A072503"
+license: MIT
