@@ -22,7 +22,7 @@ for c in range(cols):
             f = M[i][c]; M[i] = [(x - f * y) % p for x, y in zip(M[i], M[r])]
     piv.append(c); r += 1
 free = [c for c in range(cols) if c not in piv]
-print(f"order {R} degree {d}, fit n<= {NFIT}: equations {NFIT-R-N0+1}, unknowns {cols}, nullity {len(free)}")
+print(f"p = {p}: order {R} degree {d}, fit n<= {NFIT}: equations {NFIT-R-N0+1}, unknowns {cols}, nullity {len(free)}")
 if len(free) == 1:
     v = [0] * cols; v[free[0]] = 1
     for i, c in enumerate(piv): v[c] = (-M[i][free[0]]) % p

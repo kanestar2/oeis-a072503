@@ -1,11 +1,23 @@
 DRAFT EDIT FOR OEIS A072503 — NOTHING HAS BEEN SUBMITTED
 ========================================================
 
-How to use: log in to your account on oeis.org, open A072503, click "edit"
-and enter the changes below by hand. Lines marked [NEW] or [CHANGED] are
-new or changed; the rest stay as they are. Replace _Your Name_ with your
-name in OEIS format (_First Last_). The b-file is in oeis/b072503.txt; it is
+How to use: first read the section "IMPORTANT: OEIS RULES ON AI" below. Then
+log in to your account on oeis.org, open A072503, click "edit" and enter by
+hand only these data lines of the entry below:
+  * DATA (the %S line), marked [CHANGED];
+  * the %H line that links the b-file, marked [NEW];
+  * the new %E line, marked [NEW];
+  * %K, marked [CHANGED] (the keyword "more" is removed).
+This is the minimal edit. The b-file itself is oeis/b072503.txt; it is
 uploaded separately via the "b-file" link on the edit page.
+The %C, %F and %o (Python) lines marked [NEW — AI-drafted reference, do not
+paste] and the reference material for the editors after the entry were
+written by AI: they are for reference only, not text to enter (see the rules
+below). Unmarked lines stay as they are.
+Replace _Your Name_ with your name in OEIS format (_First Last_) and
+"Mon DD YYYY" with the date on which you submit the edit (for example
+Nov 05 2026). Local file paths in this text are relative to the a072503/
+folder.
 
 In the %H line (the b-file link) the name is written without underscores, as
 in other OEIS entries: "Your Name, <a href=...".
@@ -35,13 +47,21 @@ prepared, so the points below come from search-engine excerpts of that page
 
 What this means for this draft:
   * The numbers (DATA, b-file) are verifiable data. Submit them after running
-    the checks yourself: `python3 oeis/a072503_oeis.py` and `python3 compare.py`.
-  * The %C and %F texts, the Python program and the message to the editors
+    the checks yourself, from the a072503/ folder: `python3 oeis/a072503_oeis.py`
+    prints a(3..17) (compare them with the DATA line), and `python3 compare.py`
+    compares the two methods' saved results with each other, with the subset
+    DP logs and with oeis/b072503.txt, and rewrites accepted_terms.txt with
+    identical content. compare.py recomputes nothing; to recompute the numbers
+    from scratch, see "How to reproduce each number" in README.md.
+  * The %C and %F texts, the Python program (%o) and the message to the editors
     below were written by AI. They are reference material, not text to paste.
-    Write the comment, the formula and your messages to the editors in your own
-    words. Include the program only if you have understood it (a line-by-line
-    walkthrough is in explanation.md, section 5.5). You can start with a
-    minimal edit: DATA, the b-file and the %E line.
+    If you want a comment or a formula in the entry, write it in your own
+    words; write your messages to the editors in your own words too. Do not
+    paste the program either: add a program only if you understand how it
+    works and what its limits are (a line-by-line walkthrough of this one is in
+    explanation.md, section 5.5). The minimal edit (DATA, the b-file together
+    with its %H line, %K with "more" removed, and the %E line) consists of data
+    lines only.
   * Claude is not named as an author; you are the author of the edit.
   * It is better to tell the editors plainly, in your own words, that the
     computation was done with AI tools (Claude Code), and to link the
@@ -63,15 +83,15 @@ What this means for this draft:
 %C A072503 Under versus over crossings are not considered distinct.
 %C A072503 Three consecutive eyelets on the same side are not permitted.
 %C A072503 Because there are no symmetric solutions, mirrored solutions can be handled by simply dividing the total solutions by 2. (End)
-%C A072503 Renaming the inner eyelet pairs 2..n (the same permutation on both sides) maps lacings to lacings, and no renaming other than the identity fixes a lacing. Hence 2*a(n)/(n-1)! is an integer: it is the number of lacings from eyelet 1 to eyelet 2n in which the inner pairs are first reached in the order 2, 3, ..., n. Its values for n = 3..11 are 3, 15, 152, 1826, 26446, 454388, 8982734, 200843362, 5015991284. - _Your Name_, Oct 20 2026
-                                                                    [NEW]
+%C A072503 Renaming the inner eyelet pairs 2..n (the same permutation on both sides) maps lacings to lacings, and no renaming other than the identity fixes a lacing. Hence 2*a(n)/(n-1)! is an integer: it is the number of lacings from eyelet 1 to eyelet 2n in which the inner pairs are first reached in the order 2, 3, ..., n. Its values for n = 3..11 are 3, 15, 152, 1826, 26446, 454388, 8982734, 200843362, 5015991284. - _Your Name_, Mon DD YYYY
+                                                                    [NEW — AI-drafted reference, do not paste]
 %H A072503 Your Name, <a href="/A072503/b072503.txt">Table of n, a(n) for n = 3..233</a>
                                                                     [NEW]
 %H A072503 Sean A. Irvine, <a href="https://github.com/archmageirvine/joeis/blob/master/src/irvine/oeis/a072/A072503.java">Java program</a> (github)
 %H A072503 Hugo Pfoertner, <a href="http://www.randomwalk.de/shoelace/nonstra.txt">FORTRAN program to count non-straight shoe lacings and results for N=3,4</a>
 %H A072503 <a href="/index/La#lacings">Index entries for sequences related to shoe lacings</a>
-%F A072503 a(n) = ((n-1)!/2) * Sum_{k=0..n-1} (-1)^k * (n-1-k)! * N(n,k), where N(n,k) is the number of pairs (w,S) such that w is a word of n letters L and n letters R that starts with L, ends with R and contains neither LLL nor RRR, and S is a set of k positions i with 2 <= i <= 2n-2 and w(i) != w(i+1), no two of them consecutive. (w is the sequence of sides visited by the lace; S is a set of side changes where a horizontal pair is forced, counted by inclusion-exclusion.) - _Your Name_, Oct 20 2026
-                                                                    [NEW]
+%F A072503 a(n) = ((n-1)!/2) * Sum_{k=0..n-1} (-1)^k * (n-1-k)! * N(n,k), where N(n,k) is the number of pairs (w,S) such that w is a word of n letters L and n letters R that starts with L, ends with R and contains neither LLL nor RRR, and S is a set of k positions i with 2 <= i <= 2n-2 and w(i) != w(i+1), no two of them consecutive. (w is the sequence of sides visited by the lace; S is a set of side changes where a horizontal pair is forced, counted by inclusion-exclusion.) - _Your Name_, Mon DD YYYY
+                                                                    [NEW — AI-drafted reference, do not paste]
 %e A072503 The 6 non-straight lacings for n=3 are: 124536, 135426, 142356, 145326, 153246, 154236. Not counting mirror images we get a(3)=3.
 %o A072503 (Fortran) See Links.
 %o A072503 (Python)
@@ -98,14 +118,14 @@ What this means for this draft:
 %o A072503         cur = nxt
 %o A072503     # finish at eyelet 2n (right, top); halve for mirror images
 %o A072503     return sum(v for (u, l, r, s, k, f), v in cur.items() if not (s == 1 and k == 2))//2
-%o A072503 print([a(n) for n in range(3, 18)]) # _Your Name_, Oct 20 2026
-                                                                    [NEW: Python program]
+%o A072503 print([a(n) for n in range(3, 18)]) # _Your Name_, Mon DD YYYY
+                                                                    [NEW — AI-drafted reference, do not paste: Python program]
 %Y A072503 Cf. A078602, A078698, A078702, A002866.
 %K A072503 nonn                                                     [CHANGED: keyword "more" removed]
 %O A072503 3,1
 %A A072503 _Hugo Pfoertner_, Jan 27 2003
 %E A072503 a(9) from _Sean A. Irvine_, Oct 07 2024
-%E A072503 a(10)-a(17) from _Your Name_, Oct 20 2026
+%E A072503 a(10)-a(17) from _Your Name_, Mon DD YYYY
                                                                     [NEW]
 ---------------------------------------------------------------------------
 
@@ -117,25 +137,32 @@ rules above).
   methods that agree for n = 3..400: (1) a dynamic programming over the counts
   of eyelet pairs with no / only left / only right eyelet used (the inner pairs
   are interchangeable), (2) inclusion-exclusion over the forced horizontal
-  connections, summed over the admissible side patterns (formula above).
-  Both reproduce a(3..9). In addition a direct dynamic programming over subsets
-  of eyelets (no symmetry used) gives the same values for n = 3..13, and a
-  literal enumeration of all lacings gives a(3..8). The reading of the rules is
-  the one of Sean A. Irvine's Java program ("three consecutive eyelets of the
-  lacing on the same side are not permitted"); the alternative "three eyelets
-  in a line" reading of A078602 gives 76 or 89 instead of a(4) = 45. Without
-  the ban on horizontals the same rules give exactly A078698 (20, 396, 14976,
-  907200, ...). The values of 2*a(n)/(n-1)! (canonical lacings) were also
-  checked by direct enumeration for n <= 11.
+  connections, summed over the admissible side patterns (the %F formula of the
+  draft, if you include it). Both reproduce a(3..9). In addition a direct
+  dynamic programming over subsets of eyelets (no symmetry used) gives the
+  same values for n = 3..13, and a literal enumeration of all lacings gives
+  a(3..8). The reading of the rules is the one of Sean A. Irvine's Java program
+  ("three consecutive eyelets of the lacing on the same side are not
+  permitted"). The "three eyelets in a line" rule of A078602 (three
+  neighbouring eyelets of one column; this reading reproduces A078602) gives
+  a(4) = 89 instead of 45, and the reading "in a line, with any gap" (the
+  middle eyelet lies between the other two in the column, not necessarily next
+  to them) gives 76. Without the ban on horizontals the same rules give exactly
+  A078698 (20, 396, 14976, 907200, ...). The values of 2*a(n)/(n-1)! (canonical
+  lacings) were also checked by direct enumeration for n <= 11.
 
-Check before submitting:
+Check before submitting (run the commands from the a072503/ folder):
   * the program above is a copy of oeis/a072503_oeis.py; `python3 oeis/a072503_oeis.py`
     prints a(3..17) in a fraction of a second and matches accepted_terms.txt;
+  * `python3 compare.py` checks that oeis/b072503.txt is exactly the accepted
+    terms n = 3..233 (it reads the saved results and recomputes nothing);
   * b-file oeis/b072503.txt: n = 3..233, each line is "n a(n)". It stops at
     n = 233 because the line for n = 234 (a 1000-digit number) would be 1004
-    characters long, and the b-file guidelines advise against lines longer
-    than 1000 characters; from n = 235 the numbers themselves have more than
-    1000 digits. The full list up to n = 400 is in accepted_terms.txt.
+    characters long: b-file checking tools flag lines over 1000 characters.
+    This limit was not verified on oeis.org, which could not be opened from
+    here; check the OEIS b-file instructions (https://oeis.org/SubmitB.html)
+    before uploading. From n = 235 the numbers themselves have more than 1000
+    digits. The full list up to n = 400 is in accepted_terms.txt.
   * before starting the edit, check the "draft edits" link on the A072503
     page: if someone else's edit of the sequence is already under review, do
     not interfere with it.

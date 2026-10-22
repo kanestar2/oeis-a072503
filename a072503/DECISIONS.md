@@ -37,6 +37,13 @@ enumeration of all permutations (`brute/interpretations.py`, log
   the mirror-fixed lacings then give A078700 = 2*A078702 - A078698.  So reading C
   and the mirror convention are Pfoertner's own.  Nine other readings tested by
   the reviewer do not fit the known terms.
+* **Editor's note (2026-10-22):** "nine other readings" is a miscount.  The
+  reviewer tested eight further variants with `review/alt_readings.py`: seven
+  do not fit, and the eighth (start at either top eyelet) gives exactly
+  4*a(n), i.e. the same count.  It also re-ran reading B (no fit) and showed
+  that a cyclic version of the side rule is equivalent to reading C
+  (`review/REVIEW.md` §1.1).  The conclusion is unchanged: only reading C, up
+  to equivalent variants, fits the known terms.
 * **Decision: reading C** (see `DEFINITION.md` for the final wording).
 * Direction/mirrors: we count orderings that start at 1 and end at 2n and divide
   by 2.  This is the same as counting undirected lacings up to left-right mirror
@@ -50,6 +57,10 @@ enumeration of all permutations (`brute/interpretations.py`, log
 `brute/brute_dfs.c` enumerates the lacings one by one (DFS, OpenMP):
 n = 3..8 give 3, 45, 1824, 109560, 9520560, 1145057760 — all equal to OEIS
 (logs in `logs/brute_dfs_*.log`, n = 8 took 54 s on 4 threads).
+
+> **Editor's note (2026-10-22):** the 54 s are from the first run.  The
+> committed `logs/brute_dfs_n8.log` is the re-run of D5.2 and shows 58.95 s
+> (about 59 s), with no thread count; the documents now quote about 59 s.
 
 ## D4. Third, "direct" check: dynamic programming over subsets  (stage 3)
 Independent of the two fast methods (which are written by separate agents that
@@ -91,6 +102,11 @@ was done about them:
    (same numbers).  `compare.py` still reads the logs (the subset DP for n = 13
    takes 40 s and 6.4 GB, so it is not re-run on every comparison); this is
    documented here.
+   **Editor's note (2026-10-22):** the labels "n=12 CRT:" / "n=13 CRT:" in the
+   regenerated `logs/subset_dp_crt_n12-13.log` were not printed by `crt.py`,
+   which then printed only "D=… a=…".  Since 2026-10-22 `crt.py` prints the
+   label itself (D6), so the log line is now exactly its output.  The committed
+   times are 23.65 s + 15.49 s (about 24 s + 15 s).
 3. *`dp_forward.py`, `short.py`, `formula.py` are implementation checks, not
    independent methods.*  Agreed; they are not counted as such.  The two
    independent methods are method_dp and method_ie (plus the subset DP and the
@@ -99,6 +115,8 @@ was done about them:
    argument (see D4).
 5. *`ie_dp.py` silently repairs a malformed last line.*  Never happened (the
    file was rebuilt byte-identically twice); left as is, documented here.
+   **Editor's note (2026-10-22):** it dropped a malformed line anywhere in the
+   file, not only the last one; changed after the audit (D6).
 6. *Mention the A078698/A078700 evidence and that the canonical counts
    2a(n)/(n-1)! are now checked to n = 11.*  -> added to D2, README,
    explanation.md and the editor note in oeis_draft.txt.
@@ -107,3 +125,51 @@ was done about them:
    Irvine's a(9) are reproduced.
 Observation by the reviewer (not needed, not proved): 2a(n)/(n-1)! is odd only
 for n = 3, 4, so a(n) is divisible by (n-1)! for 5 <= n <= 400.
+
+## D6. b-file range; general audit  (2026-10-22)
+* **b-file trimmed from n = 3..234 to n = 3..233** (on 2026-10-20 at 22:35 UTC,
+  after the review; on `main` it came with PR #2).  The line for n = 234 would
+  be 1004 characters long ("234 " and a(234), which has exactly 1000 digits),
+  and b-file checking tools flag lines over 1000 characters; the OEIS page
+  itself could not be checked from here.  From n = 235 the terms have more
+  than 1000 digits.  Ending at 233 is safe under either reading of the limit
+  (line length or number of digits).  `review/REVIEW.md` still describes the
+  earlier b-file n = 3..234.  All terms n = 3..400 stay in `accepted_terms.txt`.
+* **General audit.**  Six auditor agents (mathematics, reproducibility,
+  documentation, Russian documentation, OEIS draft, metadata and licensing)
+  went through the whole repository, and six verifier agents re-checked their
+  findings.  Of 54 findings, 45 were confirmed and 9 refuted.  None of them is
+  an error in a computed term: all accepted terms a(3..400) stand.  The
+  confirmed findings concern the documentation (including a wrong informal
+  reason, in `explanation.md`, for why method 1 is exact; the proof in
+  `method_dp/METHOD.md` is not affected), the behaviour or output of some
+  scripts, reproducibility from a fresh clone, and licensing.  Main fixes:
+  * `review/irvine_port.c`, the reviewer's line-by-line C port of Sean A.
+    Irvine's jOEIS program `A072503.java`, was removed for licensing reasons:
+    jOEIS states no license, so the port cannot be distributed under this
+    repository's MIT license.  Its description and results remain in
+    `review/REVIEW.md` §1.1.  (The release v1.0.1 archived on Zenodo still
+    contains it.)
+  * `compare.py` now also checks that `oeis/b072503.txt` equals the accepted
+    terms up to the last line of at most 1000 characters (n = 3..233), runs
+    from any folder, and reports whether the content of `accepted_terms.txt`
+    changed.  It still recomputes nothing: it compares saved results and logs.
+  * `brute/crt.py` prints the "n=… CRT:" label that `compare.py` reads (D5.2).
+  * `method_ie/ie_dp.py` stops with an error on a malformed line in
+    `results.txt` instead of dropping it silently; only an unterminated last
+    line (a kill during the append) is still dropped and recomputed (D5.5).
+  * The reviewer's `review/prefix_test.py` and `review/per_word_test.py` run
+    from a clone (the reviewer had used copies in the untracked
+    `review/tmp/`); `recurrence/holdout.py` names the prime in its output.
+  * Documents: timings taken from the committed logs (n = 8 brute force about
+    59 s, n = 13 subset DP about 24 s + 15 s); a runnable a(13) command; the
+    numpy requirement (method 1 and `recurrence/`); a note that reruns append
+    to the tracked `progress.log` files; "proved" qualified (the proofs were
+    written by AI agents and checked by the reviewer agent, not yet by an
+    independent human expert); agent isolation stated as an instruction, not
+    as a checked fact; the count of readings tested by the reviewer (D2); the
+    reviewer's working time 19:33–20:10; a citation text in `README.md`; the
+    later work in `CLAUDE_ROLE.md`.  In the OEIS drafts the signature dates
+    are now a placeholder to be filled in on the day of submission.
+* The historical records (`review/REVIEW.md`, D1–D5) were not rewritten;
+  where they are out of date, dated editor's notes (2026-10-22) say so.

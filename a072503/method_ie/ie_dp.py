@@ -23,7 +23,11 @@ blocks (L-run, R-run) of the word:
 Cells are computed in layers m = max(i, h); layer m needs layers m-1, m-2
 only, so the program is incremental in n.  Results are appended to
 results.txt ("n D(n) a(n)"), progress to progress.log, and the two last
-layers are checkpointed (unpacked) so that a restart continues.
+layers are checkpointed (unpacked) so that a restart continues.  Values of n
+already in results.txt are verified, not written again.  An unterminated last
+line of results.txt (a kill during the append) is dropped and recomputed; any
+other malformed line, a line with D != 2a or a duplicate n stops the program
+with an error (exit status 1).
 
 usage: python3 ie_dp.py NMAX [--budget SECONDS] [--dir DIR] [--no-ckpt]
 """
@@ -164,18 +168,23 @@ def main():
 
     known = {}
     if os.path.exists(res_path):
-        good = []
-        for line in open(res_path):
+        lines = open(res_path).readlines()
+        for i, line in enumerate(lines):
+            # only an unterminated LAST line (cut by a kill during the append) is
+            # dropped and recomputed; any other bad line is an error
+            if i == len(lines) - 1 and not line.endswith('\n'):
+                with open(res_path, 'w') as fh:
+                    fh.write(''.join(lines[:-1]))
+                log('dropped an unterminated last line from results.txt')
+                break
             p = line.split()
-            # accept only complete lines (newline-terminated, D = 2a); a line cut
-            # by a kill during the append is dropped and recomputed
-            if line.endswith('\n') and len(p) == 3 and int(p[1]) == 2 * int(p[2]):
-                known[int(p[0])] = (int(p[1]), int(p[2]))
-                good.append(line)
-        if ''.join(good) != open(res_path).read():
-            with open(res_path, 'w') as fh:
-                fh.write(''.join(good))
-            log('dropped an incomplete line from results.txt')
+            if not (len(p) == 3 and all(x.isdigit() for x in p) and int(p[1]) == 2 * int(p[2])):
+                log(f'ERROR: malformed line {i + 1} in results.txt (expected "n D a" with D = 2a)')
+                sys.exit(1)
+            if int(p[0]) in known:
+                log(f'ERROR: duplicate n={p[0]} in results.txt (line {i + 1})')
+                sys.exit(1)
+            known[int(p[0])] = (int(p[1]), int(p[2]))
 
     B = args.bits or coef_bits(args.nmax)
     sv = Solver(B)

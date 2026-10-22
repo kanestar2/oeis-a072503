@@ -27,4 +27,6 @@ Findings:
   sum of hypergeometric terms, hence holonomic), but its order was not derived.
 
 Reproduce (from this folder): `python3 guess_np.py T 40 ../method_ie/results.txt`,
-`python3 mindeg.py 18 26`, `python3 holdout.py 18 18 420 2147483629`.
+`python3 mindeg.py 18 26`, `python3 holdout.py 18 18 420 2147483629`,
+`python3 holdout.py 18 18 420 1000000007` (the two hold-out runs take about 25 s together;
+their output, which names each prime p, is `holdout.log`).

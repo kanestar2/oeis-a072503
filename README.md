@@ -32,10 +32,12 @@ All terms n = 3..400: [`a072503/accepted_terms.txt`](a072503/accepted_terms.txt)
 How the terms were established:
 
 * Two independent exact polynomial-time methods agree for every
-  n = 3..400. They were written by separate AI agents that did not see each
-  other's code:
+  n = 3..400:
   * a dynamic program over counts of row statuses;
   * inclusion–exclusion over the left/right side patterns.
+* They were written by separate AI agents that were instructed to read only
+  the definition (`a072503/DEFINITION.md`) and their own folder; the reviewer
+  found no sign of copying.
 * Both reproduce all seven known terms.
 * A direct subset DP that uses no symmetry confirms n = 3..13.
 * Literal enumeration of every lacing confirms n = 3..8.
@@ -61,15 +63,27 @@ Status (2026-10-20): **not yet submitted to OEIS**. A draft of the edit is in
 
 ```
 python3 a072503/oeis/a072503_oeis.py     # prints a(3..17) in well under a second
-cd a072503 && python3 compare.py          # compares the two methods' result files
+cd a072503 && python3 compare.py          # checks the saved results; recomputes nothing
 ```
+
+`compare.py` compares the two methods' saved results with each other, with
+the subset DP logs and with the b-file `a072503/oeis/b072503.txt`, and
+rewrites `a072503/accepted_terms.txt` with identical content.
 
 ## How to cite
 
 Release v1.0.1 is archived on Zenodo:
 [doi:10.5281/zenodo.23553326](https://doi.org/10.5281/zenodo.23553326).
-See also [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository"
-button uses it.
+Suggested reference:
+
+```text
+Severin, K. (2026). OEIS A072503: new terms a(10)-a(400) (shoe lacings with no horizontal connections) (v1.0.1) [Software]. Zenodo. https://doi.org/10.5281/zenodo.23553326
+```
+
+GitHub's "Cite this repository" button is generated from
+[`CITATION.cff`](CITATION.cff), which has no DOI, version or release date, so
+the reference it gives has neither the DOI nor the year; please use the text
+above or add the DOI by hand.
 
 ## License
 

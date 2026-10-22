@@ -29,7 +29,7 @@ New evidence from this review, independent of all project code:
   * The partner test is `e != 2m−1−current`, the same as `p_i + p_{i+1} ≠ 2n+1`.
   * `sides` holds the last two sides, starting as "R,L". L is forbidden after L,L and R after R,R. The exit to the other top eyelet (on the right) is forbidden after R,R.
   * This is exactly rules 1–3 of DEFINITION.md, with no extra or missing condition. `int`/`long` ranges are irrelevant for n ≤ 9.
-  * My line-by-line C port (`irvine_port.c`) gives D = 6, 90, 3648, 219120, 19041120, 2290115520 for n = 3..8. That equals the project's D(n).
+  * My line-by-line C port (`irvine_port.c`) gives D = 6, 90, 3648, 219120, 19041120, 2290115520 for n = 3..8. That equals the project's D(n). ([see editor's note 4](#editors-notes-2026-10-22))
 * **Sister sequences** (downloaded from oeisdata to `tmp/dl_oeis/`):
   * A078698 is "each eyelet has at least one direct connection to the opposite side", directed, starting and ending at the extreme pair. For an inner eyelet, its rule is logically identical to rule 3: the two neighbours of p_i are not both on p_i's side. For the end eyelets, the top connection 1–2n supplies the opposite side.
   * **Reading C without the horizontal ban** gives D' = 20, 396, 14976, 907200 by literal enumeration (n = 3..6). This is A078698 and its closed form (n−1)!²·Σ_k C(n−k,k)² (`family_check.py`).
@@ -119,7 +119,7 @@ Binaries were compiled into `review/tmp/bin` (`gcc -O2 [-fopenmp] [-DMODE=k]`, t
 | `prefix_test.py` | method_dp's lumping lemma, tested on its production code: completions of real prefixes by my memoized search vs F(profile) from `dp_main.next_layer` | 46 s | **882,321 prefixes, 0 mismatches** (all prefixes n = 4..6, 300 random each for n = 8..11) |
 | `per_word_test.py 3 9` | method_ie per-word formula D_w vs per-word counts from `canon_enum` (×(n−1)!) | 2 s | all 5+11+26+63+153+376+931 words equal (method_ie only had n ≤ 6) |
 | `closed_form.py 70` | METHOD.md §5 sum, implemented from the text (Δ by recurrence, not formula.py) | 147 s | equals accepted, n = 3..70 |
-| `alt_readings.py 6`, `family_check.py`, `irvine_port.c` | see §1 | | as stated |
+| `alt_readings.py 6`, `family_check.py`, `irvine_port.c` ([see editor's note 4](#editors-notes-2026-10-22)) | see §1 | | as stated |
 | `sanity.py` | accepted = common part (format, contiguity, newline); D divisible by (n−1)! for all n ≤ 400; growth | s | all OK (below) |
 | `asymptotic_check.py` | rho(n) = D(n)/A078698(n) vs e^{−(1+1/√5)} | < 1 s | 0.2352248021 (extrapolated) vs 0.2352248073 |
 
@@ -135,7 +135,7 @@ Binaries were compiled into `review/tmp/bin` (`gcc -O2 [-fopenmp] [-DMODE=k]`, t
 
 **Draft files.**
 * The `%S` line of `oeis_draft.txt` (a(3..17), 240 characters; a(18) would make 276) equals the accepted terms.
-* `oeis/b072503.txt` is n = 3..234: contiguous, equal to accepted, largest term 1000 digits (a(235) has 1005), LF endings.
+* `oeis/b072503.txt` is n = 3..234: contiguous, equal to accepted, largest term 1000 digits (a(235) has 1005), LF endings. ([see editor's note 1](#editors-notes-2026-10-22))
 * The `%F` wording (places 2 ≤ i ≤ 2n−2, w(i) ≠ w(i+1), no two consecutive) is the formula I re-derived independently.
 
 ## 5. Findings, ranked by severity
@@ -170,7 +170,7 @@ Binaries were compiled into `review/tmp/bin` (`gcc -O2 [-fopenmp] [-DMODE=k]`, t
    * The canonical-count statement is "checked to n = 6" in README/explanation; it is now checked by literal enumeration to n = 11.
    * Suggest adding these to DECISIONS/README and to the editor note.
 7. **W7 (info).** Pfoertner's FORTRAN program could not be retrieved, so it was not compared.
-8. **W8 (info).** Method_ie's terms n = 401..500 (not accepted) agree with my independent `glue_ie.py`. If wanted, they now have two independent confirmations. This is irrelevant for the b-file, which stops at n = 234 because of the 1000-digit limit.
+8. **W8 (info).** Method_ie's terms n = 401..500 (not accepted) agree with my independent `glue_ie.py`. If wanted, they now have two independent confirmations. This is irrelevant for the b-file, which stops at n = 234 because of the 1000-digit limit ([see editor's note 1](#editors-notes-2026-10-22)).
 9. **W9 (info).** Small timing differences from the docs (brute n=8: 74 s here vs 54 s) and an ordering difference in explanation.md ("2, 2, 2, 0 and 0" vs METHOD.md "0, 2, 2, 0, 2", the same multiset). These are harmless.
 10. Not reviewed in depth: `recurrence/` (marked as a conjecture and not part of the draft). Its hold-out uses n = 401..500, which `glue_ie.py` has now confirmed.
 
@@ -184,7 +184,7 @@ Binaries were compiled into `review/tmp/bin` (`gcc -O2 [-fopenmp] [-DMODE=k]`, t
 * **All accepted terms a(3..400)** should be considered established. There are three independent exact polynomial-time implementations that agree on every term, and two of them have written proofs that I checked. The lumping lemma and the per-word formula were also tested directly on the production code. Growth and asymptotics are fully consistent.
 * The only recommended changes before submission are documentation fixes W1, W4 and W6. No number needs to change.
 
-## 7. Files in review/
+## 7. Files in review/ ([see editor's notes 2–4](#editors-notes-2026-10-22))
 
 * `REVIEW.md`: this report.
 * `canon_enum.c`: literal canonical enumeration. Build with `gcc -O2 -fopenmp -o tmp/bin/canon_enum canon_enum.c`; `per_word_test.py` expects that binary.
@@ -194,4 +194,31 @@ Binaries were compiled into `review/tmp/bin` (`gcc -O2 [-fopenmp] [-DMODE=k]`, t
 * `tmp/runs/*`: outputs of every run listed above (`sha256_before.txt`, `sha256_regenerated.txt`).
 * `tmp/dl_java`, `tmp/dl_oeis`: downloaded sources (data only).
 * `tmp/dp_copy`, `tmp/ie_copy`, `tmp/compare_copy`, `tmp/oeis_copy`: script copies used for runs. Bulky checkpoints and copies of the results files were deleted after hashing.
-* `review/tmp/` is not covered by `.gitignore`; it is about 1.5 MB.
+* `review/tmp/` is not covered by `.gitignore`; it is about 1.5 MB ([see editor's note 2](#editors-notes-2026-10-22)).
+
+---
+
+## Editor's notes (2026-10-22)
+
+*Added on 2026-10-22, after the review; not written by the reviewer. The report above is the reviewer's record of 2026-10-20 and is kept as written, with two exceptions: the markers "(see editor's note …)" were added, and the quotes in W1 and W9 were Russian at first and were replaced by their English wording when English became the main language of the repository (W9 then cited `explanation_ru.md`; it now cites `explanation.md`).*
+
+1. **b-file range (§4 "Draft files", W8).** At the time of the review `oeis/b072503.txt` covered n = 3..234. It was later trimmed to **n = 3..233**. The limit applied is 1000 characters per b-file line, not a digit count (b-file checking tools flag longer lines; the OEIS page itself could not be checked, so cutting at 233 is also safe under a 1000-digit reading): a(234) has exactly 1000 digits, so its line `234 a(234)` would be 1004 characters long; a(235) has 1005 digits. See "Check before submitting" in `oeis_draft.txt`.
+
+2. **`review/tmp/` is not published (§1.1, §3, W6, §7).** `review/tmp/` is listed in `a072503/.gitignore`, so the last line of §7 no longer holds, and it is not part of the repository or of any release. The files the report cites there (the run outputs `tmp/runs/*` with `sha256_before.txt` and `sha256_regenerated.txt`, the binaries in `tmp/bin`, the downloads `tmp/dl_java` and `tmp/dl_oeis`, and the script copies `tmp/dp_copy`, `tmp/ie_copy`, `tmp/compare_copy`, `tmp/oeis_copy`) exist only in the reviewer's original working copy; some of them were committed for a short time early in the history of the development branch and untracked again in commit 5b5c4f2. The `.seq` files of the related sequences named in §1.1 and W6 (A002866, A078602, A078629, A078676, A078698, A078702) can be fetched from oeis.org or from github.com/oeis/oeisdata.
+
+3. **Re-running the reviewer's tests from a clone.** As the reviewer left them, `prefix_test.py` and `per_word_test.py` imported the copies in `tmp/dp_copy` and `tmp/ie_copy` and called `tmp/bin/canon_enum`, so they failed in a clone. On 2026-10-22 they were changed to import `../method_dp/dp_main.py` and `../method_ie/ie_per_word.py` directly (both modules only define functions on import, and nothing in `method_dp/` or `method_ie/` is written); `per_word_test.py` builds `tmp/bin/canon_enum` from `canon_enum.c` with `gcc -O2 -fopenmp` if it is missing, or takes the path of such a binary as a third argument. The tests themselves are unchanged. Two smaller changes: `glue_ie.py` needs an OUTFILE argument, which the §4 table leaves out, and now prints its usage when it is missing; `sanity.py` printed "rho(n) monotone from n=3 on" although it tested only n ≥ 8 (and rho rises from n = 4 to n = 5); it now tests and prints n = 5..400, as stated in §4 "Growth". `irvine_port.c` is gone (note 4). From `a072503/review/` (checked on 2026-10-22 in a copy of the repository without `review/tmp/`, 4 cores):
+
+   ```
+   mkdir -p tmp/bin
+   python3 -B prefix_test.py               # about 1 min; "total 882321 prefixes, mismatches 0", "ALL OK"
+   python3 -B per_word_test.py 3 9         # a few seconds (builds tmp/bin/canon_enum first); "ALL OK"
+   tmp/bin/canon_enum 10                   # about 7-9 s; a=36441019601280
+   python3 -B glue_ie.py 500 tmp/glue.txt  # about 45 s
+   awk '$1>=3 && $1<=400 {print $1, $3}' tmp/glue.txt | cmp - ../accepted_terms.txt && echo OK
+   awk '$1>=3' tmp/glue.txt | cmp - ../method_ie/results.txt && echo OK
+   python3 -B sanity.py                    # about 1 min
+   ```
+
+   `closed_form.py 70`, `alt_readings.py 6`, `family_check.py` and `asymptotic_check.py` need no setup.
+
+4. **`irvine_port.c` removed (§1.1, §4, §7).** `irvine_port.c` was a line-by-line C port of the `search()` routine of Sean A. Irvine's jOEIS program `A072503.java` (github.com/archmageirvine/joeis, `src/irvine/oeis/a072/A072503.java`). jOEIS states no license, so the port could not be offered under this repository's MIT license, and it was removed on 2026-10-22 for that reason. Its result stays recorded in §1.1: the port gave D(3..8) = 6, 90, 3648, 219120, 19041120, 2290115520, equal to the project's D(n). The check can be repeated with Irvine's own program from jOEIS.
