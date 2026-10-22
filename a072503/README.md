@@ -131,7 +131,7 @@ resumes from it without checking anything. So to re-verify, first delete
 
 ## Time spent
 
-* The whole work took about 1 h 25 min (18:56–20:20 UTC, 2026-10-20). The
+* The whole work took about 1 h 20 min (18:56–20:15 UTC, 2026-10-20). The
   agents for methods 1 and 2 worked in parallel for ~18 and ~28 minutes, the
   reviewer for ~39 minutes.
 * Net machine time for the new numbers is a few minutes (table above). The

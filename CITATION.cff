@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use these results or programs, please cite them as below."
+title: "OEIS A072503: new terms a(10)-a(400) (shoe lacings with no horizontal connections)"
+type: software
+authors:
+  - given-names: Kane
+    alias: kanestar2
+repository-code: "https://github.com/kanestar2/oeis-a072503"
+url: "https://github.com/kanestar2/oeis-a072503"
+abstract: >-
+  New terms a(10)..a(400) of OEIS A072503, the number of ways to lace a shoe
+  with n eyelet pairs such that there is no direct horizontal connection
+  between the two eyelets of a pair. Computed with Claude Code (Anthropic):
+  two independent exact polynomial-time methods, written by separate AI agents,
+  agree for n = 3..400; a direct subset dynamic program confirms n = 3..13 and
+  literal enumeration n = 3..8. See CLAUDE_ROLE.md for who did what.
+keywords:
+  - OEIS
+  - A072503
+  - integer sequences
+  - combinatorics
+  - shoe lacing
+  - dynamic programming
+  - inclusion-exclusion
+  - Claude Code
+license:
+  - MIT
+  - CC-BY-4.0
+references:
+  - type: database
+    title: "A072503: Number of ways to lace a shoe with n eyelet pairs such that there is no direct horizontal connection between any adjacent eyelet pair"
+    authors:
+      - name: "The OEIS Foundation Inc."
+    url: "https://oeis.org/A072503"
