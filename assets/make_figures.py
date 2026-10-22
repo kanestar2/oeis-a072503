@@ -47,18 +47,40 @@ def panel(order, x0, y0, scale=1.0, title=None, step_labels=True):
         out.append(f'<line x1="{ax + r:.1f}" y1="{ay:.1f}" x2="{bx - r:.1f}" y2="{by:.1f}" stroke="{FORBID}" '
                    f'stroke-width="{2 * scale:.1f}" stroke-dasharray="{6 * scale:.1f} {5 * scale:.1f}" opacity="0.55"/>')
     # lace segments with arrowheads
+    segs = []
     for i in range(len(order) - 1):
         (ax, ay) = eyelet_pos(order[i], xl, xr, yt, dy)
         (bx, by) = eyelet_pos(order[i + 1], xl, xr, yt, dy)
+        segs.append((ax, ay, bx, by))
         dx, dyy = bx - ax, by - ay
         d = (dx * dx + dyy * dyy) ** 0.5
         ux, uy = dx / d, dyy / d
         sx, sy, ex, ey = ax + ux * r, ay + uy * r, bx - ux * (r + 4 * scale), by - uy * (r + 4 * scale)
         out.append(f'<line x1="{sx:.1f}" y1="{sy:.1f}" x2="{ex:.1f}" y2="{ey:.1f}" stroke="{LACE}" '
                    f'stroke-width="{3.2 * scale:.1f}" stroke-linecap="round" marker-end="url(#arrow)"/>')
-        if step_labels:
-            mx, my = (ax + bx) / 2 - uy * 13 * scale, (ay + by) / 2 + ux * 13 * scale
-            out.append(f'<text x="{mx:.1f}" y="{my + 5 * scale:.1f}" font-family="{FONT}" font-size="{13 * scale:.1f}" '
+    if step_labels:
+        # step number in a small badge ON its own segment, at the point farthest
+        # from the other segments and from the eyelets (so it cannot be misread)
+        def dist_to_seg(px, py, s):
+            ax, ay, bx, by = s
+            vx, vy = bx - ax, by - ay
+            t = max(0.0, min(1.0, ((px - ax) * vx + (py - ay) * vy) / (vx * vx + vy * vy)))
+            qx, qy = ax + t * vx, ay + t * vy
+            return ((px - qx) ** 2 + (py - qy) ** 2) ** 0.5
+        eyes = [eyelet_pos(e, xl, xr, yt, dy) for e in range(1, 2 * N + 1)]
+        for i, (ax, ay, bx, by) in enumerate(segs):
+            best = None
+            for k in range(20, 81, 2):
+                t = k / 100
+                px, py = ax + t * (bx - ax), ay + t * (by - ay)
+                dmin = min([dist_to_seg(px, py, o) for j, o in enumerate(segs) if j != i] +
+                           [((px - ex) ** 2 + (py - ey) ** 2) ** 0.5 - r for ex, ey in eyes])
+                if best is None or dmin > best[0]:
+                    best = (dmin, px, py)
+            _, px, py = best
+            out.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="{9 * scale:.1f}" fill="#ffffff" '
+                       f'stroke="{LACE}" stroke-width="{1.5 * scale:.1f}"/>')
+            out.append(f'<text x="{px:.1f}" y="{py + 4.5 * scale:.1f}" font-family="{FONT}" font-size="{12 * scale:.1f}" '
                        f'text-anchor="middle" fill="{LACE}" font-weight="bold">{i + 1}</text>')
     # eyelets
     for e in range(1, 2 * N + 1):

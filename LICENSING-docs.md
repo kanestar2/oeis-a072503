@@ -9,7 +9,9 @@ under the **Creative Commons Attribution 4.0 International License
 
 The program source code is licensed under the MIT License (see `LICENSE`).
 
-Exception: `a072503/A072503_oeisdata_snapshot.seq` is a copy of the OEIS
-entry A072503 from https://github.com/oeis/oeisdata. OEIS content is
-© The OEIS Foundation Inc. and is licensed under CC BY-SA 4.0
-(https://creativecommons.org/licenses/by-sa/4.0/).
+Exceptions (OEIS content, © The OEIS Foundation Inc., licensed under
+CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/):
+* `a072503/A072503_oeisdata_snapshot.seq`, a copy of the OEIS entry A072503
+  from https://github.com/oeis/oeisdata;
+* the lines of `a072503/oeis_draft.txt` and `a072503/oeis_draft_ru.txt` that
+  are copied unchanged from that entry (those not marked [NEW] or [CHANGED]).
