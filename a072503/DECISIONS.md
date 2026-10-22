@@ -173,3 +173,16 @@ for n = 3, 4, so a(n) is divisible by (n-1)! for 5 <= n <= 400.
     are now a placeholder to be filled in on the day of submission.
 * The historical records (`review/REVIEW.md`, D1–D5) were not rewritten;
   where they are out of date, dated editor's notes (2026-10-22) say so.
+
+## D7. OEIS AI guideline confirmed from the page itself  (2026-10-22)
+The repository owner opened the OEIS page "Use of AI for OEIS Submissions"
+(the old title "... is Forbidden" redirects to it; latest approved revision
+29 August 2026) and supplied its text.  It confirms the points that were
+known before only from search excerpts, including that the rules apply to
+updates of existing sequences.  It adds a quotation from Terence Tao: if the
+authors cannot convincingly demonstrate that they can give a clear,
+expert-level talk on their results, correct and properly attributed, the
+result should not be published.  The rules section of both OEIS drafts now
+follows the page text, and the drafts ask the submitter to be ready to
+explain the result in their own words (explanation.md, sections 1-8).  The
+recommended minimal edit (DATA, b-file and its %H line, %E, %K) is unchanged.
