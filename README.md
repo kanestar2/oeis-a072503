@@ -1,5 +1,7 @@
 # OEIS A072503 — new terms
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23553326.svg)](https://doi.org/10.5281/zenodo.23553326)
+
 The documents are in English. They were first written in Russian; the
 Russian originals of the main documents are kept next to them:
 [`a072503/README_ru.md`](a072503/README_ru.md),
@@ -64,8 +66,10 @@ cd a072503 && python3 compare.py          # compares the two methods' result fil
 
 ## How to cite
 
-See [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository" button
-uses it.
+Release v1.0.1 is archived on Zenodo:
+[doi:10.5281/zenodo.23553326](https://doi.org/10.5281/zenodo.23553326).
+See also [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository"
+button uses it.
 
 ## License
 
