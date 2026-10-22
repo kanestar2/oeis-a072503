@@ -1,6 +1,6 @@
 # License for documents, figures and data
 
-Copyright (c) 2026 Kane (kanestar2)
+Copyright (c) 2026 Kane Severin (kanestar2)
 
 The documents (`*.md`, `*.txt` notes and drafts), the figures in `assets/`
 and the data files (results, logs, b-file) in this repository are licensed
