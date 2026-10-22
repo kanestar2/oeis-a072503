@@ -140,9 +140,9 @@ requests #2–#5 and a final audit.
     error in a computed term. The fixes are listed in `a072503/DECISIONS.md`,
     D6.
 * **The human** (on GitHub and Zenodo; this is not visible in the files):
-  set the repository's About text and topics, created the GitHub release
-  v1.0.1 and enabled its archiving on Zenodo
-  ([doi:10.5281/zenodo.23553326](https://doi.org/10.5281/zenodo.23553326)),
+  set the repository's About text and topics, enabled archiving on Zenodo
+  and created the GitHub releases v1.0.1 and v1.0.2 (all versions:
+  [doi:10.5281/zenodo.23553325](https://doi.org/10.5281/zenodo.23553325)),
   and reviewed and merged the pull requests.
 
 ## Timeline (2026-10-20, UTC)

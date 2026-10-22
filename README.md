@@ -1,6 +1,6 @@
 # OEIS A072503 — new terms
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23553326.svg)](https://doi.org/10.5281/zenodo.23553326)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23553325.svg)](https://doi.org/10.5281/zenodo.23553325)
 
 The documents are in English. They were first written in Russian; the
 Russian originals of the main documents are kept next to them:
@@ -72,12 +72,16 @@ rewrites `a072503/accepted_terms.txt` with identical content.
 
 ## How to cite
 
-Release v1.0.1 is archived on Zenodo:
-[doi:10.5281/zenodo.23553326](https://doi.org/10.5281/zenodo.23553326).
+The releases are archived on Zenodo. The DOI
+[doi:10.5281/zenodo.23553325](https://doi.org/10.5281/zenodo.23553325)
+stands for all versions and always resolves to the latest one. Individual
+versions: v1.0.2 (after the general audit)
+[doi:10.5281/zenodo.23557065](https://doi.org/10.5281/zenodo.23557065),
+v1.0.1 [doi:10.5281/zenodo.23553326](https://doi.org/10.5281/zenodo.23553326).
 Suggested reference:
 
 ```text
-Severin, K. (2026). OEIS A072503: new terms a(10)-a(400) (shoe lacings with no horizontal connections) (v1.0.1) [Software]. Zenodo. https://doi.org/10.5281/zenodo.23553326
+Severin, K. (2026). OEIS A072503: new terms a(10)-a(400) (shoe lacings with no horizontal connections) [Software]. Zenodo. https://doi.org/10.5281/zenodo.23553325
 ```
 
 GitHub's "Cite this repository" button is generated from
