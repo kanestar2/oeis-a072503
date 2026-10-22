@@ -4,10 +4,16 @@
 For valid prefixes P = p_1..p_t (sampled at random, or all of them for small n),
 count the valid completions of P by the reviewer's own memoized search over
 (remaining eyelets, last eyelet, run flag) - no symmetry used - and compare with
-F(profile(P)) read from the layers built by method_dp/dp_main.py (a COPY in
-review/tmp/dp_copy; only next_layer/layer0/ix are used, main() is not run).
+F(profile(P)) read from the layers built by method_dp/dp_main.py (imported from
+../method_dp; only next_layer/layer0/ix are used, main() is not run, and no file
+of method_dp is written).
 
-Usage: python3 -B prefix_test.py
+Usage (from a072503/review/): python3 -B prefix_test.py      (about 1 min)
+
+Editor's note (2026-10-22): the reviewer ran this script on a copy of dp_main.py
+in review/tmp/dp_copy, which is not in the repository.  The import path now
+points to ../method_dp so that the script runs from a clone; the test itself is
+unchanged.
 """
 import os
 import random
@@ -15,7 +21,8 @@ import sys
 from functools import lru_cache
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "tmp", "dp_copy"))
+sys.path.insert(0, os.path.join(HERE, "..", "method_dp"))
+sys.dont_write_bytecode = True   # write no __pycache__ into method_dp
 import dp_main  # noqa: E402
 
 KMAX = 2 * (11 - 1)

@@ -20,10 +20,15 @@ eyelets of one row. OEIS knows the terms up to `n = 9`. We obtained
 and so on up to `n = 400` (file `accepted_terms.txt`).
 
 Every number was obtained by **two different counting methods**, written by
-two different implementers who did not see each other's work. The numbers agree
-for every `n` from 3 to 400. Both methods reproduce all seven previously known
-terms. For `n ≤ 13` there is a third, “direct” method, and it agrees too. For
-`n ≤ 8` all lacings were, in addition, enumerated one by one.
+two different implementers who were instructed not to read each other's work
+(section 8). The numbers agree for every `n` from 3 to 400. Both methods
+reproduce all seven previously known terms. For `n ≤ 13` there is a third,
+“direct” method, and it agrees too. For `n ≤ 8` all lacings were, in addition,
+enumerated one by one.
+
+Where this text says “proved”, a written proof exists in the section or file
+cited. The proofs were written by AI agents and checked by the reviewer agent,
+not yet by an independent human expert.
 
 Below, step by step: what exactly is counted, using `n = 3` as an example; how
 both methods work; and why they can be trusted.
@@ -75,6 +80,11 @@ Finally, a lacing and its **mirror image** (left and right sides swapped) are
 counted as the same lacing. So the answer is the number of orders satisfying
 rules 1–4, divided by 2 (why it divides exactly in half is explained in
 section 2.3).
+
+Note on numbering: `DEFINITION.md` and the other project files number the rules
+differently: their rule 1 is our rule 1, their rule 2 is our rule 3 (no
+horizontals), their rule 3 is our rule 4 (at most two consecutive on one side),
+and our rule 2 (each eyelet exactly once) is stated in their preamble.
 
 ### 1.3. Why exactly this reading
 
@@ -162,7 +172,7 @@ immediately, the valid lacings alone number about `7.3·10^13` for `n = 10`
 for a single number, and the next number is about 250 times larger. This is
 exactly how Irvine obtained a(9) in 2024: that is `3.6·10^11` lacings. By
 brute-force enumeration (the program `brute/brute_dfs.c`) we repeated
-`n = 3…8`. For `n = 8` that is 2.3 billion lacings in 54 seconds on 4 cores.
+`n = 3…8`. For `n = 8` that is 2.3 billion lacings in about 59 seconds on 4 cores.
 Beyond that, a smarter method is needed.
 
 ---
@@ -214,9 +224,12 @@ the following:
 
 It is like a cashier who, to give change, needs to know how many banknotes of
 each denomination they have, not their serial numbers. Why this is enough: two
-partial lacings with the same “bookkeeping” data differ only by a relabeling of
-rows (section 4). Hence they have equally many ways to be completed. This is
-rigorously proved in `method_dp/METHOD.md` (the lumping lemma).
+partial lacings with the same “bookkeeping” data may differ (even in their
+left/right pattern), but what remains to be done is the same for both up to a
+relabeling of rows: a suitable relabeling of rows 2…n (section 4) turns every
+completion of one into a completion of the other, and back. Hence they have
+equally many ways to be completed. This is proved in `method_dp/METHOD.md`
+(section 4, the lumping lemma).
 
 ### 5.2. A step
 
@@ -348,7 +361,8 @@ allow this?
   `(n−1)!` ways. This also determines the rows in the `k` right positions. The
   remaining `n−1−k` right positions are filled arbitrarily: `(n−1−k)!` ways.
 
-This gives the formula (proved; there is nothing guessed in it):
+This gives the formula (it is derived, not guessed; the proof is in
+`method_ie/METHOD.md`):
 
 ```
 2·a(n) = (n−1)! · Σ_k (−1)^k · (n−1−k)! · N(n,k)
@@ -374,7 +388,8 @@ exactly** eyelets are already used, where we are now, and whether the previous
 eyelet was on the same side. It is a direct restatement of the rules: from each
 such “snapshot” we can step to any free eyelet if the rules allow it. There are
 `2^(2n−2)·(2n−2)·2` possible snapshots. For `n = 13` that is 800 million, about
-6 GB of memory and half a minute. Beyond that, memory runs out. This method
+6 GB of memory and about 24 s + 15 s (one run for each of two moduli, see
+section 8). Beyond that, memory runs out. This method
 confirmed `n = 3…13`, including a(10), a(11), a(12), a(13).
 
 ---
@@ -394,9 +409,13 @@ confirmed `n = 3…13`, including a(10), a(11), a(12), a(13).
 3. **Mandatory test.** Each method had to reproduce, on its own, all seven
    known terms a(3)…a(9). Each implementer also checked against their own
    brute-force enumeration.
-4. **Comparison.** `compare.py` compares the results line by line: methods 1
-   and 2 agreed for all `n = 3…400`, and the “direct” method for `n = 3…13`. A
-   new term is accepted only if two independent methods agree.
+4. **Comparison.** `compare.py` (run as `python3 compare.py` from `a072503/`)
+   recomputes nothing. It compares the saved results of methods 1 and 2 with
+   each other, with the logs of the “direct” method and with the b-file
+   `oeis/b072503.txt`, and rewrites `accepted_terms.txt` with identical
+   content. Methods 1 and 2 agreed for all `n = 3…400`, and the “direct” method
+   for `n = 3…13`. A new term is accepted only if two independent methods
+   agree.
 5. **Exact arithmetic.** There is no rounding anywhere: Python integers (of any
    length) or 128-bit integers in C. For `n = 13` the C computation is done
    with two moduli and combined by the Chinese remainder theorem, with a
@@ -405,7 +424,8 @@ confirmed `n = 3…13`, including a(10), a(11), a(12), a(13).
    reading, in the code and in the results, and found none. Here is what it
    did:
    * recomputed everything from scratch;
-   * checked nine other readings of the rules: none of them fits;
+   * checked eight other readings of the rules: none of them fits (two more
+     variants turned out to be equivalent to ours);
    * obtained a(3..11) with its own enumeration of canonical lacings;
    * wrote a third fast method, which agreed up to `n = 500`;
    * checked the key lemma of method 1 on 882 thousand real partial lacings.
@@ -416,13 +436,17 @@ confirmed `n = 3…13`, including a(10), a(11), a(12), a(13).
 
 ## 9. What is proved and what is only checked
 
+“Proved” below means that a written proof exists in the section or file cited.
+The proofs were written by AI agents and checked by the reviewer agent, not yet
+by an independent human expert.
+
 | statement | status |
 |---|---|
 | Lacings split into mirror pairs, there are no symmetric ones, the division by 2 is exact | proved (section 2.3) |
 | 2·a(n) is divisible by (n−1)!, the quotient = the number of lacings with the rows in order of first appearance | proved (section 4), checked by enumeration up to n = 11 |
 | The formula of method 2 (inclusion–exclusion) | proved (section 6, in detail in `method_ie/METHOD.md`) |
 | Exactness of method 1 (“lumping” of states) | proved (`method_dp/METHOD.md`, lemma) |
-| Values a(10)…a(400) | computed by two independent proved methods, 100% agreement |
+| Values a(10)…a(400) | computed by two independent methods, both with written proofs; 100% agreement |
 | Reading of the rules | not “provable”: it is a choice of how to read the OEIS text. Justification: it is the only reading that reproduces all known terms, and it coincides with Irvine's program |
 | Linear recurrence of order 18 with polynomial coefficients of degree 18 for 2·a(n)/(n−1)! | **conjecture only**: found by fitting modulo primes, fitted on n ≤ 420 and holds for all further terms up to n = 500. The coefficients have not been written out; there is no proof (`recurrence/README.md`) |
 

@@ -56,7 +56,7 @@ for this English version.
   Only one gives the known a(4) = 45 and a(5) = 1824. As a check of the model,
   another reading reproduces the sister sequence A078602 (checked for n = 3..5).
 * Wrote the literal enumerator `brute/brute_dfs.c` (C/OpenMP; reproduces
-  a(3..8); n = 8 is 2.3·10^9 lacings in 54 s) and the exact subset DP
+  a(3..8); n = 8 is 2.3·10^9 lacings in about 59 s) and the exact subset DP
   `brute/subset_dp.c` (no symmetry used; 128-bit integers, or two moduli plus
   CRT). The subset DP produced a(10)…a(13) as a reference **before** the fast
   methods were finished. These values were deliberately not given to the
@@ -85,17 +85,22 @@ for this English version.
   `2a(n) = (n−1)! Σ_k (−1)^k (n−1−k)! N(n,k)`. It also derived an explicit
   6-fold binomial sum and a fast DP for N(n,k).
 * Reproduced a(3..9) and computed n = 3..500 (under 1 minute).
-* Neither method agent saw the other's code or the coordinator's numbers.
-  Their results agree for **every n = 3..400**.
+* Both method agents were instructed to read only `DEFINITION.md` and their
+  own folder, and were not given the coordinator's numbers. This cannot be
+  checked from the files; the reviewer found no sign of copying. Their
+  results agree for **every n = 3..400**.
 
 ### Subagent "reviewer" (`a072503/review/`)
 
 * Was asked to try to break the definition, the code and the results.
 * Re-ran everything from scratch: both result files were rebuilt
   byte-identically.
-* Tested further alternative readings of the rules (`a072503/review/alt_readings.py`);
-  none fits the known terms. Found that the chosen reading without the
-  horizontal ban gives Pfoertner's sister sequence A078698.
+* Tested eight further variants of the rules (`a072503/review/alt_readings.py`):
+  seven do not fit the known terms, and one (starting at either top eyelet)
+  gives exactly four times the same count. It also re-ran reading B (no fit)
+  and showed that a cyclic version of the side rule is equivalent to the
+  chosen reading. Found that the chosen reading without the horizontal ban
+  gives Pfoertner's sister sequence A078698.
 * Wrote its own checks:
   * a literal enumeration of "canonical" lacings that gives a(3..11) directly;
   * a third fast method that agrees up to n = 500;
@@ -112,6 +117,34 @@ compared them with the originals: numbers, commands, file names and claims.
 The Russian originals are kept as `a072503/README_ru.md`,
 `a072503/explanation_ru.md` and `a072503/oeis_draft_ru.txt`.
 
+## Later additions (2026-10-21/22)
+
+After the run, the work continued in the same session, through pull
+requests #2–#5 and a final audit.
+
+* **Claude:**
+  * the English translation of the documents and its check by a separate
+    agent (see above), and this page, `CLAUDE_ROLE.md` (PR #2);
+  * the header of `a072503/oeis_draft.txt` on the OEIS rules on AI and the
+    program walkthrough in `a072503/explanation.md`, section 5.5 (first
+    version on 2026-10-20 at 22:35 UTC, together with the b-file trim to
+    n = 3..233; see `a072503/DECISIONS.md`, D6), and a step-by-step guide to
+    submitting the edit, written for the human (not in the repository);
+  * the figure `assets/lacing_n3.svg`, the social preview image
+    `assets/social_preview.*`, the script `assets/make_figures.py` that
+    generates them, `LICENSE`, `LICENSING-docs.md` and `CITATION.cff` (PR #3);
+  * the Zenodo-compatible fix of `CITATION.cff` (PR #4);
+  * the DOI badge and the "How to cite" section of `README.md` (PR #5);
+  * a general audit of the repository (2026-10-22): six auditor agents and
+    six verifier agents; of 54 findings, 45 were confirmed, none of them an
+    error in a computed term. The fixes are listed in `a072503/DECISIONS.md`,
+    D6.
+* **The human** (on GitHub and Zenodo; this is not visible in the files):
+  set the repository's About text and topics, created the GitHub release
+  v1.0.1 and enabled its archiving on Zenodo
+  ([doi:10.5281/zenodo.23553326](https://doi.org/10.5281/zenodo.23553326)),
+  and reviewed and merged the pull requests.
+
 ## Timeline (2026-10-20, UTC)
 
 | time | step |
@@ -124,9 +157,10 @@ The Russian originals are kept as `a072503/README_ru.md`,
 | 19:06 | subset DP gives reference values a(3..13) |
 | 19:22 | method 1 finished (n ≤ 400) |
 | 19:31 | method 2 finished (n ≤ 500); both agree for n = 3..400 |
-| 19:32 | reviewer started |
+| 19:33 | reviewer started |
 | 19:48 | README, explanation, OEIS draft, b-file written |
-| 20:15 | review finished (no errors found), documentation fixes committed |
+| 20:10 | review finished (no errors found) |
+| 20:15 | documentation fixes committed |
 
 About 1 h 20 min from the task to the reviewed result. The machine time for
 the new terms themselves is a few minutes.

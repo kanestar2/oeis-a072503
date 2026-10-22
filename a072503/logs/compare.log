@@ -3,4 +3,5 @@ method_ie: n = 3..500 (498 values), reproduces a(3..9): True
 subset_dp: n = 3..13 (11 values), reproduces a(3..9): True
 method_dp vs method_ie: common n = 3..400, mismatches: []
 subset_dp vs both methods, n = 3..13: mismatches: []
-accepted_terms.txt written: n = 3..400
+oeis/b072503.txt: n = 3..233 (231 lines), equal to the accepted terms, longest line 999 chars (the line for n = 234 would have 1004)
+accepted_terms.txt written: n = 3..400, content unchanged

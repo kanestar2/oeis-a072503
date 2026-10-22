@@ -117,4 +117,6 @@ def run(NMAX, out):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        sys.exit("usage: python3 glue_ie.py NMAX OUTFILE")
     run(int(sys.argv[1]), sys.argv[2])

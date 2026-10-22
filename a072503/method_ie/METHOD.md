@@ -103,7 +103,7 @@ Each polynomial is stored **packed** in one Python integer with `B` bits per coe
 All coefficients are non‑negative counts. For a cell, a coefficient is at most
 (number of words of length `M = i+h ≤ 2N`) × (number of sets of non‑adjacent places)
 `≤ 2^{2N}·Fib(2N+2) ≤ 2^{2N}φ^{2N+1} < 2^{3.3885N+0.7}`, so `B = ⌊3.389N⌋+2` bits never
-carry. As an extra check, a run with a much larger `B` (1700 instead of 680, `N = 200`) gave
+carry. As an extra check, a run with a much larger `B` (1700 instead of 679, `N = 200`) gave
 byte‑identical output.
 
 **Complexity.** For all `n ≤ N` together there are `O(N²)` cells with `O(N)` coefficients
@@ -155,7 +155,7 @@ much faster.
 | `N_n(k)`: DP = summing `m_k(w)` over enumerated words (n ≤ 11) = explicit 6‑fold sum (n ≤ 16); `D(n)`: DP = Δ‑sum | `formula.py 16` | all equal |
 | known terms a(3..9) = 3, 45, 1824, 109560, 9520560, 1145057760, 181091917440 | `ie_dp.py`, `short.py` | reproduced |
 | `D(n)` even | asserted for every n | ok, n = 2..500 |
-| packing width (B = 680 vs 1700), resume after budget stop, truncated last line, recompute from scratch | `ie_dp.py` in `tmp/` | byte‑identical |
+| packing width (B = 679 vs 1700), resume after budget stop, truncated last line, recompute from scratch | `ie_dp.py` in `tmp/` | byte‑identical |
 | `short.py` vs `ie_dp.py`, a(3..15) | | equal |
 
 New values: a(10) = 36441019601280, a(11) = 9101014585689600,
@@ -165,6 +165,7 @@ not written to `results.txt`, which starts at n = 3.
 ## 7. Reproduce
 
     cd method_ie
+    mkdir -p tmp                                           # tmp/ is not in the repository
     python3 brute_perm.py 3 6 > tmp/brute_3_6.txt        # ~7 s
     python3 ie_per_word.py compare tmp/brute_3_6.txt      # ~0.2 s
     python3 formula.py 16                                  # ~92 s
@@ -176,6 +177,9 @@ not written to `results.txt`, which starts at n = 3.
 `tmp/ie_dp.ckpt`. It stops cleanly once the budget is used up (default 1400 s); rerunning
 the same command continues from the checkpoint. Without a checkpoint it recomputes from
 `n = 2` and *verifies* every n already in `results.txt` instead of writing it again.
+An unterminated last line of `results.txt` (cut by a kill during the append) is dropped and
+recomputed; any other malformed line, a line with D ≠ 2a or a duplicate n stops the program
+with an error (exit status 1).
 `sha256(results.txt)` for n = 3..500:
 `8298788ed18463c0f5c2f0a44f45b39e3ddc8f499586e61bb91a7f84f7fd448f`.
 

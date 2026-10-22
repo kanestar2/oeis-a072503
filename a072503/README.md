@@ -29,9 +29,11 @@ The OEIS (oeisdata snapshot of 2026-10-20) knows a(3..9). This work obtains
 * `accepted_terms.txt` — all accepted terms n = 3..400 in b-file format
   (`n a(n)`). A term is accepted only if both independent methods gave the
   same number. There is not a single discrepancy.
-* `oeis/b072503.txt` — the b-file for OEIS, n = 3..233. Beyond that the
-  b-file lines would be longer than 1000 characters (an OEIS guideline), and
-  from n = 235 the numbers themselves have more than 1000 digits.
+* `oeis/b072503.txt` — the b-file for OEIS, n = 3..233. It stops there
+  because the line for n = 234 (a 1000-digit number) would be 1004 characters
+  long: b-file checking tools flag lines over 1000 characters; the OEIS page
+  could not be checked. From n = 235 the numbers themselves have more than
+  1000 digits.
 * Method 2 also computed n = 401..500 (`method_ie/results.txt`), but the other
   method did not check them, so they are **not** accepted.
 
@@ -51,20 +53,39 @@ exactly A078698, a related sequence by the same author, Pfoertner.
 ## How to reproduce each number
 
 Everything is run from the `a072503/` folder. You need gcc with OpenMP and
-Python 3.8+ (method 1 uses numpy).
+Python 3.8+ with numpy (used by method 1, `method_dp/dp_main.py`, and by the
+scripts in `recurrence/`).
 
 | what | command | time (4 cores, 16 GB) |
 |---|---|---|
 | choosing the interpretation, n = 3..5 | `python3 brute/interpretations.py 5` | 0.5 s |
-| full brute-force enumeration, a(3..8) | `gcc -O3 -march=native -fopenmp -o brute/brute_dfs brute/brute_dfs.c && for n in 3 4 5 6 7 8; do brute/brute_dfs $n; done` | n = 8: 54 s |
+| full brute-force enumeration, a(3..8) | `gcc -O3 -march=native -fopenmp -o brute/brute_dfs brute/brute_dfs.c && for n in 3 4 5 6 7 8; do brute/brute_dfs $n; done` | n = 8: about 59 s |
 | direct subset DP, a(3..12) exactly | `gcc -O3 -march=native -fopenmp -DMODE=0 -o brute/subset_dp_m0 brute/subset_dp.c && for n in $(seq 3 12); do brute/subset_dp_m0 $n; done` | n = 12: 13 s, 3 GB |
-| direct DP, a(13) | `gcc ... -DMODE=1 -o brute/subset_dp_m1 ...`, `-DMODE=2 -o brute/subset_dp_m2 ...`; `brute/subset_dp_m1 13`, `brute/subset_dp_m2 13`; `python3 brute/crt.py 13 <D1> <D2>` | 23 s + 14 s, 6.4 GB |
-| **method 1**, a(3..400) | `cd method_dp && python3 dp_main.py 400` | 253 s, 1.3 GB (n ≤ 100: 1.6 s) |
-| **method 2**, a(3..500) | `cd method_ie && python3 ie_dp.py 500` | 58 s, 0.3 GB (n ≤ 200: 1.3 s) |
-| comparison and `accepted_terms.txt` | `python3 compare.py` | < 1 s |
+| direct DP, a(13) (mod 2^64 and mod 2^61−1, combined by CRT) | see the commands below the table | about 24 s + 15 s, 6.4 GB |
+| **method 1**, a(3..400) | `python3 method_dp/dp_main.py 400` | 253 s, 1.3 GB (n ≤ 100: 1.6 s) |
+| **method 2**, a(3..500) | `python3 method_ie/ie_dp.py 500` | 58 s, 0.3 GB (n ≤ 200: 1.3 s) |
+| comparison of the saved results, `accepted_terms.txt` | `python3 compare.py` | < 1 s |
 | short programs, a(3..15) / a(3..17) | `python3 method_dp/short.py`, `python3 method_ie/short.py`, `python3 oeis/a072503_oeis.py` | < 0.1 s |
 | D(n)/(n−1)! = "canonical" lacings | `python3 brute/canonical_check.py 6` | 8 s |
-| recurrence search | `cd recurrence && python3 guess_np.py T 40 ../method_ie/results.txt; python3 holdout.py 18 18 420 2147483629` | 2 min + 1 min |
+| recurrence search | `(cd recurrence && python3 guess_np.py T 40 ../method_ie/results.txt && python3 holdout.py 18 18 420 2147483629)` | 2 min + 12 s |
+
+**a(13) by the direct DP.** The program is run twice, once mod 2^64 and once
+mod 2^61−1, and `brute/crt.py` combines the two residues (each run prints
+`D=` followed by the residue on stdout; its progress goes to stderr):
+
+```
+gcc -O3 -march=native -fopenmp -DMODE=1 -o brute/subset_dp_m1 brute/subset_dp.c
+gcc -O3 -march=native -fopenmp -DMODE=2 -o brute/subset_dp_m2 brute/subset_dp.c
+D1=$(brute/subset_dp_m1 13 | sed 's/.*D=\([0-9]*\).*/\1/')
+D2=$(brute/subset_dp_m2 13 | sed 's/.*D=\([0-9]*\).*/\1/')
+python3 brute/crt.py 13 $D1 $D2    # n=13 CRT: D=... a=1000447433001080064000
+```
+
+`python3 compare.py` recomputes nothing. It compares the two methods' saved
+results (`method_dp/results.txt`, `method_ie/results.txt`) with each other,
+with the subset DP values saved in `logs/subset_dp_exact_n3-12.log` and
+`logs/subset_dp_crt_n12-13.log`, and with `oeis/b072503.txt`; if all checks
+pass, it rewrites `accepted_terms.txt` with identical content.
 
 The programs `dp_main.py` and `ie_dp.py` are resumable. They append one line
 per n, write a log (`progress.log`), save checkpoints to `tmp/` (not tracked
@@ -74,7 +95,12 @@ instead of overwriting it. But this holds only for a run **without a
 checkpoint**: a checkpoint is saved at the end of every run, and the next run
 resumes from it without checking anything. So to re-verify, first delete
 `method_dp/tmp/checkpoint.pkl` and `method_ie/tmp/ie_dp.ckpt` (or run
-`python3 ie_dp.py 500 --no-ckpt`).
+`python3 method_ie/ie_dp.py 500 --no-ckpt`).
+
+A rerun appends to `method_dp/progress.log` and `method_ie/progress.log`,
+which are tracked by git: the committed files are the logs of the original
+runs of 2026-10-20. After a rerun, restore them with
+`git checkout -- method_dp/progress.log method_ie/progress.log`.
 
 ## How the numbers were established
 
@@ -84,9 +110,11 @@ resumes from it without checking anything. So to re-verify, first delete
    is `more`.
 2. **The definition** was reconstructed by brute-force enumeration and matched
    the known a(3..8) (`brute/`, `logs/`).
-3. **Two independent fast methods** were written by two different agents that
-   saw only `DEFINITION.md` and the known terms. They did not know our
-   intermediate numbers.
+3. **Two independent fast methods** were written by two different agents.
+   Each was instructed to read only `DEFINITION.md` (which lists the known
+   terms) and its own folder, and was not given our intermediate numbers.
+   This cannot be checked from the files; the reviewer found no sign of
+   copying.
    * `method_dp/` — dynamic programming over states: how many rows are
      untouched, how many have only the left eyelet used and how many have only
      the right eyelet used, plus a few bits of local information. About n³
@@ -99,7 +127,8 @@ resumes from it without checking anything. So to re-verify, first delete
 4. **A third check**, using no symmetry at all — a direct subset DP
    (`brute/subset_dp.c`), n = 3..13.
 5. **Comparison** (`compare.py`, `logs/compare.log`): methods 1 and 2 agree for
-   n = 3..400, and the direct DP agrees with them for n = 3..13.
+   n = 3..400, and the direct DP agrees with them for n = 3..13. The b-file
+   `oeis/b072503.txt` equals the accepted terms n = 3..233.
 6. **The reviewer agent** (`review/REVIEW.md`) looked for an error and **found
    none**, whether in the interpretation, the code or the numbers. It did the
    following:
@@ -118,8 +147,10 @@ resumes from it without checking anything. So to re-verify, first delete
 
 ## Formulas: what is proved and what is not
 
-* **Proved:** the inclusion–exclusion formula (`method_ie/METHOD.md`, which
-  also gives an explicit 6-fold binomial sum) and the exactness of method 1
+* **Proved** (the proofs were written by AI agents and checked by the
+  reviewer agent, not yet by an independent human expert): the
+  inclusion–exclusion formula (`method_ie/METHOD.md`, which also gives an
+  explicit 6-fold binomial sum) and the exactness of method 1
   (`method_dp/METHOD.md`). It is also proved that 2a(n) is divisible by
   (n−1)!: the quotient is the number of lacings in which the inner pairs first
   appear in the order 2..n (`explanation.md`, section 4). This was checked by
@@ -133,9 +164,9 @@ resumes from it without checking anything. So to re-verify, first delete
 
 * The whole work took about 1 h 20 min (18:56–20:15 UTC, 2026-10-20). The
   agents for methods 1 and 2 worked in parallel for ~18 and ~28 minutes, the
-  reviewer for ~39 minutes.
+  reviewer for ~37 minutes (19:33–20:10).
 * Net machine time for the new numbers is a few minutes (table above). The
-  longest runs are the full brute-force enumeration for n = 8 (54 s) and
+  longest runs are the full brute-force enumeration for n = 8 (about 59 s) and
   method 1 up to n = 400 (4 min). No run came close to the 25-minute limit.
 
 ## Files

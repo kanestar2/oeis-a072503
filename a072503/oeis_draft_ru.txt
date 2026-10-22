@@ -1,11 +1,23 @@
 ЧЕРНОВИК ПРАВКИ ДЛЯ OEIS A072503 — НИЧЕГО НЕ ОТПРАВЛЕНО
 =========================================================
 
-Как пользоваться: на oeis.org войти в аккаунт, открыть A072503, нажать "edit"
-и внести изменения ниже вручную. Строки с пометкой [NEW] или [CHANGED] —
-новые или изменённые, остальные остаются как есть. Вместо _Your Name_ поставьте
-своё имя в формате OEIS (_Имя Фамилия_). b-файл лежит в oeis/b072503.txt;
-он загружается отдельно через ссылку "b-file" на странице редактирования.
+Как пользоваться: сначала прочитайте раздел "ВАЖНО: ПРАВИЛА OEIS ОБ ИИ" ниже.
+Затем на oeis.org войдите в аккаунт, откройте A072503, нажмите "edit" и
+внесите вручную только эти строки данных из записи ниже:
+  * DATA (строка %S), пометка [CHANGED];
+  * строка %H со ссылкой на b-файл, пометка [NEW];
+  * новая строка %E, пометка [NEW];
+  * %K, пометка [CHANGED] (ключевое слово "more" убирается).
+Это и есть минимальная правка. Сам b-файл лежит в oeis/b072503.txt; он
+загружается отдельно через ссылку "b-file" на странице редактирования.
+Строки %C, %F и %o (Python) с пометкой [NEW — AI-drafted reference, do not
+paste] и справочный материал для редакторов после записи написаны ИИ: это
+только справка, а не текст для ввода (см. правила ниже). Строки без пометок
+остаются как есть.
+Вместо _Your Name_ поставьте своё имя в формате OEIS (_Имя Фамилия_), а вместо
+"Mon DD YYYY" — дату, когда вы отправляете правку, в том же английском формате
+(например, Nov 05 2026). Пути к локальным файлам в этом тексте указаны
+относительно папки a072503/.
 
 В строке %H (ссылка на b-файл) имя пишется без подчёркиваний, как в других
 записях OEIS: "Your Name, <a href=...".
@@ -35,12 +47,20 @@ https://oeis.org/wiki/Use_of_AI_for_OEIS_Submissions_is_Forbidden
 
 Что из этого следует для черновика:
   * Числа (DATA, b-файл) — проверяемые данные. Отправляйте их после того, как
-    сами запустите проверку: `python3 oeis/a072503_oeis.py` и `python3 compare.py`.
-  * Тексты %C и %F, программа на Python и сообщение редакторам ниже написаны
-    ИИ. Это справочный материал, а не текст для вставки. Комментарий, формулу и
-    сообщения редакторам напишите своими словами. Программу включайте, только
-    если разобрались в ней (разбор по строкам — explanation_ru.md, раздел 5.5).
-    Можно начать с минимальной правки: DATA, b-файл и строка %E.
+    сами запустите проверку из папки a072503/: `python3 oeis/a072503_oeis.py`
+    печатает a(3..17) (сравните их со строкой DATA), а `python3 compare.py`
+    сверяет сохранённые результаты двух методов друг с другом, с логами прямой
+    DP по подмножествам и с oeis/b072503.txt и перезаписывает accepted_terms.txt
+    тем же содержимым. compare.py ничего не пересчитывает; как пересчитать
+    числа с нуля — в разделе "Как воспроизвести каждое число" в README_ru.md.
+  * Тексты %C и %F, программа на Python (%o) и сообщение редакторам ниже
+    написаны ИИ. Это справочный материал, а не текст для вставки. Если хотите
+    добавить в запись комментарий или формулу, напишите их своими словами;
+    сообщения редакторам тоже пишите своими словами. Программу тоже не
+    вставляйте: программу можно добавить, только если вы понимаете, как она
+    работает и где её пределы (разбор этой программы по строкам —
+    explanation_ru.md, раздел 5.5). Минимальная правка (DATA, b-файл вместе со
+    строкой %H, %K без "more" и строка %E) состоит только из строк данных.
   * Claude не указывается автором; автор правки — вы.
   * Лучше прямо и своими словами сообщить редакторам, что расчёт сделан с
     помощью ИИ-инструментов (Claude Code), и дать ссылку на репозиторий, где
@@ -62,15 +82,15 @@ https://oeis.org/wiki/Use_of_AI_for_OEIS_Submissions_is_Forbidden
 %C A072503 Under versus over crossings are not considered distinct.
 %C A072503 Three consecutive eyelets on the same side are not permitted.
 %C A072503 Because there are no symmetric solutions, mirrored solutions can be handled by simply dividing the total solutions by 2. (End)
-%C A072503 Renaming the inner eyelet pairs 2..n (the same permutation on both sides) maps lacings to lacings, and no renaming other than the identity fixes a lacing. Hence 2*a(n)/(n-1)! is an integer: it is the number of lacings from eyelet 1 to eyelet 2n in which the inner pairs are first reached in the order 2, 3, ..., n. Its values for n = 3..11 are 3, 15, 152, 1826, 26446, 454388, 8982734, 200843362, 5015991284. - _Your Name_, Oct 20 2026
-                                                                    [NEW]
+%C A072503 Renaming the inner eyelet pairs 2..n (the same permutation on both sides) maps lacings to lacings, and no renaming other than the identity fixes a lacing. Hence 2*a(n)/(n-1)! is an integer: it is the number of lacings from eyelet 1 to eyelet 2n in which the inner pairs are first reached in the order 2, 3, ..., n. Its values for n = 3..11 are 3, 15, 152, 1826, 26446, 454388, 8982734, 200843362, 5015991284. - _Your Name_, Mon DD YYYY
+                                                                    [NEW — AI-drafted reference, do not paste]
 %H A072503 Your Name, <a href="/A072503/b072503.txt">Table of n, a(n) for n = 3..233</a>
                                                                     [NEW]
 %H A072503 Sean A. Irvine, <a href="https://github.com/archmageirvine/joeis/blob/master/src/irvine/oeis/a072/A072503.java">Java program</a> (github)
 %H A072503 Hugo Pfoertner, <a href="http://www.randomwalk.de/shoelace/nonstra.txt">FORTRAN program to count non-straight shoe lacings and results for N=3,4</a>
 %H A072503 <a href="/index/La#lacings">Index entries for sequences related to shoe lacings</a>
-%F A072503 a(n) = ((n-1)!/2) * Sum_{k=0..n-1} (-1)^k * (n-1-k)! * N(n,k), where N(n,k) is the number of pairs (w,S) such that w is a word of n letters L and n letters R that starts with L, ends with R and contains neither LLL nor RRR, and S is a set of k positions i with 2 <= i <= 2n-2 and w(i) != w(i+1), no two of them consecutive. (w is the sequence of sides visited by the lace; S is a set of side changes where a horizontal pair is forced, counted by inclusion-exclusion.) - _Your Name_, Oct 20 2026
-                                                                    [NEW]
+%F A072503 a(n) = ((n-1)!/2) * Sum_{k=0..n-1} (-1)^k * (n-1-k)! * N(n,k), where N(n,k) is the number of pairs (w,S) such that w is a word of n letters L and n letters R that starts with L, ends with R and contains neither LLL nor RRR, and S is a set of k positions i with 2 <= i <= 2n-2 and w(i) != w(i+1), no two of them consecutive. (w is the sequence of sides visited by the lace; S is a set of side changes where a horizontal pair is forced, counted by inclusion-exclusion.) - _Your Name_, Mon DD YYYY
+                                                                    [NEW — AI-drafted reference, do not paste]
 %e A072503 The 6 non-straight lacings for n=3 are: 124536, 135426, 142356, 145326, 153246, 154236. Not counting mirror images we get a(3)=3.
 %o A072503 (Fortran) See Links.
 %o A072503 (Python)
@@ -97,14 +117,14 @@ https://oeis.org/wiki/Use_of_AI_for_OEIS_Submissions_is_Forbidden
 %o A072503         cur = nxt
 %o A072503     # finish at eyelet 2n (right, top); halve for mirror images
 %o A072503     return sum(v for (u, l, r, s, k, f), v in cur.items() if not (s == 1 and k == 2))//2
-%o A072503 print([a(n) for n in range(3, 18)]) # _Your Name_, Oct 20 2026
-                                                                    [NEW: Python program]
+%o A072503 print([a(n) for n in range(3, 18)]) # _Your Name_, Mon DD YYYY
+                                                                    [NEW — AI-drafted reference, do not paste: Python program]
 %Y A072503 Cf. A078602, A078698, A078702, A002866.
 %K A072503 nonn                                                     [CHANGED: keyword "more" removed]
 %O A072503 3,1
 %A A072503 _Hugo Pfoertner_, Jan 27 2003
 %E A072503 a(9) from _Sean A. Irvine_, Oct 07 2024
-%E A072503 a(10)-a(17) from _Your Name_, Oct 20 2026
+%E A072503 a(10)-a(17) from _Your Name_, Mon DD YYYY
                                                                     [NEW]
 ---------------------------------------------------------------------------
 
@@ -115,24 +135,32 @@ https://oeis.org/wiki/Use_of_AI_for_OEIS_Submissions_is_Forbidden
   methods that agree for n = 3..400: (1) a dynamic programming over the counts
   of eyelet pairs with no / only left / only right eyelet used (the inner pairs
   are interchangeable), (2) inclusion-exclusion over the forced horizontal
-  connections, summed over the admissible side patterns (formula above).
-  Both reproduce a(3..9). In addition a direct dynamic programming over subsets
-  of eyelets (no symmetry used) gives the same values for n = 3..13, and a
-  literal enumeration of all lacings gives a(3..8). The reading of the rules is
-  the one of Sean A. Irvine's Java program ("three consecutive eyelets of the
-  lacing on the same side are not permitted"); the alternative "three eyelets
-  in a line" reading of A078602 gives 76 or 89 instead of a(4) = 45. Without
-  the ban on horizontals the same rules give exactly A078698 (20, 396, 14976,
-  907200, ...). The values of 2*a(n)/(n-1)! (canonical lacings) were also
-  checked by direct enumeration for n <= 11.
+  connections, summed over the admissible side patterns (the %F formula of the
+  draft, if you include it). Both reproduce a(3..9). In addition a direct
+  dynamic programming over subsets of eyelets (no symmetry used) gives the
+  same values for n = 3..13, and a literal enumeration of all lacings gives
+  a(3..8). The reading of the rules is the one of Sean A. Irvine's Java program
+  ("three consecutive eyelets of the lacing on the same side are not
+  permitted"). The "three eyelets in a line" rule of A078602 (three
+  neighbouring eyelets of one column; this reading reproduces A078602) gives
+  a(4) = 89 instead of 45, and the reading "in a line, with any gap" (the
+  middle eyelet lies between the other two in the column, not necessarily next
+  to them) gives 76. Without the ban on horizontals the same rules give exactly
+  A078698 (20, 396, 14976, 907200, ...). The values of 2*a(n)/(n-1)! (canonical
+  lacings) were also checked by direct enumeration for n <= 11.
 
-Проверка перед отправкой:
+Проверка перед отправкой (команды запускайте из папки a072503/):
   * программа выше — копия oeis/a072503_oeis.py; `python3 oeis/a072503_oeis.py`
     печатает a(3..17) за доли секунды и совпадает с accepted_terms.txt;
+  * `python3 compare.py` проверяет, что oeis/b072503.txt в точности совпадает
+    с принятыми членами n = 3..233 (он читает сохранённые результаты и ничего
+    не пересчитывает);
   * b-файл oeis/b072503.txt: n = 3..233, в каждой строке "n a(n)". Он
     обрезан на n = 233: строка для n = 234 (число из 1000 цифр) заняла бы
-    1004 символа, а правила b-файлов не советуют строки длиннее 1000
-    символов; с n = 235 и сами числа длиннее 1000 цифр.
+    1004 символа, а программы проверки b-файлов отмечают строки длиннее
+    1000 символов. На oeis.org это ограничение не проверено (сайт отсюда не
+    открывался); перед загрузкой сверьтесь с инструкцией OEIS по b-файлам
+    (https://oeis.org/SubmitB.html). С n = 235 и сами числа длиннее 1000 цифр.
     Полный список до n = 400 — в accepted_terms.txt.
   * перед началом правки проверьте на странице A072503 ссылку "draft edits":
     если по последовательности уже идёт чужая правка, не вмешивайтесь в неё.

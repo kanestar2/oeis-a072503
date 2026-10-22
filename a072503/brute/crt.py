@@ -23,4 +23,4 @@ D = r1 + m1 * t
 assert D % m1 == r1 and D % m2 == r2
 assert D <= factorial(2 * n - 2)
 assert D % 2 == 0, "D must be even"
-print(f"D={D} a={D // 2}")
+print(f"n={n} CRT: D={D} a={D // 2}")

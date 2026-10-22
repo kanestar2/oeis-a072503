@@ -170,7 +170,7 @@ All commands are run from `method_dp/`:
     python3 dp_forward.py 3 150   # independent per-n forward DP (same transitions, separate code)
     python3 short.py              # < 40 lines, prints a(3..15)
     python3 brute_check.py 6      # literal permutation enumeration, n = 3..6
-    gcc -O2 -o tmp/bitmask_check bitmask_check.c && tmp/bitmask_check 12
+    mkdir -p tmp && gcc -O2 -o tmp/bitmask_check bitmask_check.c && tmp/bitmask_check 12
                                   # subset DP over eyelets, NO symmetry used, n = 3..12
 
 How `dp_main.py` handles `results.txt`:

@@ -96,8 +96,12 @@ print("   2nd differences of log(a(n)/(n-1)!^2): min %.3e max %.3e, sign changes
     min(d2[7:]), max(d2[7:]), sum(1 for x, y in zip(d2[7:], d2[8:]) if (x > 0) != (y > 0))))
 rhos = [Fraction(2 * acc[n], math.factorial(n - 1) ** 2 * words(n)) for n in range(3, 401)]
 diffs = [float(rhos[i + 1] - rhos[i]) for i in range(len(rhos) - 1)]
-print("   rho(n) monotone from n=%d on:" % 3,
-      "increasing" if all(x > 0 for x in diffs[5:]) else ("decreasing" if all(x < 0 for x in diffs[5:]) else "NOT monotone"),
+# diffs[i] = rho(i+4) - rho(i+3), so diffs[N0-3:] covers rho(N0), ..., rho(400).
+# (Edited 2026-10-22: the message used to say "from n=3" while diffs[5:], i.e. n >= 8,
+# was tested; rho rises from n = 4 to n = 5.)
+N0 = 5
+print("   rho(n) monotone for n = %d..400:" % N0,
+      "increasing" if all(x > 0 for x in diffs[N0 - 3:]) else ("decreasing" if all(x < 0 for x in diffs[N0 - 3:]) else "NOT monotone"),
       "| first diffs n=3..12:", ["%.2e" % x for x in diffs[:10]])
 print("   limit guess e^{-4/3}*?: rho(400) = %.8f, e^{-4/3} = %.8f" % (float(rhos[-1]), math.exp(-4 / 3)))
 
